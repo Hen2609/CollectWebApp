@@ -1,15 +1,15 @@
 const express = require('express')
+let ejs = require('ejs');
+
 const app = express()
 
 const port = process.env.NODE_DOCKER_PORT || 8080;
 
-const api = require('./src/endpoints','/api')
+const controllers = require('./src/controllers')
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
-app.use('/api', api)
+app.set('view engine', 'ejs');
+app.set("views", "./src/views")
+app.use('/', controllers)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
