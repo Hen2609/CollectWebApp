@@ -1,5 +1,6 @@
 const express = require('express')
-let ejs = require('ejs');
+const ejs = require('ejs');
+const bodyParser = require('body-parser')
 
 const app = express()
 
@@ -9,6 +10,11 @@ const controllers = require('./src/controllers')
 
 app.set('view engine', 'ejs');
 app.set("views", "./src/views")
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json())
+
+app.use(mongoSanitize())
+
 app.use('/', controllers)
 
 app.listen(port, () => {
