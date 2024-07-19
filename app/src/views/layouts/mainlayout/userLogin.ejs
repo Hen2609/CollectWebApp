@@ -1,0 +1,9 @@
+<% if(user && user.name){ %>
+    <span class="user-name"><%= user.name %></span>
+<% } else{ %>  
+    <button id="login-button">
+        <span>
+            התחבר
+        </span>
+    </button>
+<% } %>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title ?? 'כותרת' %></title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        <%- include('./style.css') %>
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+<body data-drawer-open="false">
+    <!-- Navbar -->
+    <nav class="navbar">
+        <button id="sidebar-toggle"><span><%- include('../../components/icon/index.ejs', {icon: "menu"}) %></span></button>
+        <h1 class="navbar-title">קידוש Squad</h1>
+        <div class="navbar-edge">
+            <p id="current-date"></p>
+            <%- include('./userLogin.ejs', user) %>
+            <button class="cart-button">🛒</button>
+        </div>
+    </nav>
+
+    <!-- Sidebar / Navigation Drawer -->
+    <aside class="sidebar" id="sidebar" aria-hidden="true">
+        <button id="close-sidbar"><span><%- include('../../components/icon/index.ejs',{icon: 'close'}) %></span></button>
+        <ul class="nav-list">
+            <li><a href="#">a</a></li>
+            <li><a href="#">b</a></li>
+            <li><a href="#">c</a></li>
+            <li><a href="#">d</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+        <%- include('../../pages/' + page + "/index.ejs", data) %>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Store Name. Credits to Henshay.</p>
+    </footer>
+</body>
+<script>
+    <%- include('./script.js') %>
+</script>
+</html>

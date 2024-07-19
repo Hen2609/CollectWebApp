@@ -2,14 +2,12 @@ const express = require('express')
 
 const router = express.Router()
 const product = require("../../models/product")
-const sanitize = require('mongo-sanitize')
-
-
+const render = require("../../util/render")
 
 
 router.get('/product', async (req,res) => {
     const products = await product.find({})
-    res.render('layouts/mainlayout', {page: 'test', title: "test", data: {product: products[0]}})
+    render(req,res,'test','test',{product: products[0]})
 })
 
 router.post('/product', async (req,res) => {
