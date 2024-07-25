@@ -30,6 +30,7 @@ body {
         display: flex;
         gap: 5px;
         align-items: center;
+        
         padding-inline-end: 10vw;
     }
 }

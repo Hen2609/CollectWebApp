@@ -1,15 +1,16 @@
 const express = require('express')
 const router = express.Router()
 const mongo = require("../util/mongo")
-const product = require('./product')
 
-
+const api = require("./api")
+const pages = require("./pages")
 
 router.use(async (req,res,next) => {
     await mongo()
     next();
 })
 
-router.use('/product', product)
+router.use("/api", api)
+router.use("/", pages)
 
 module.exports = router;
