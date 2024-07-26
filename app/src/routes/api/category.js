@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
     }
     const valid_name = await isCategoryNameAvailable(req.body.name)
     if(!valid_name){
-        return res.status(400).json({error: "duplicate categroy name", code: 3}``)
+        return res.status(400).json({error: "duplicate categroy name", code: 3})
     }
     const category = await createCategory(req.body.name)
     return res.status(201).json(category);
