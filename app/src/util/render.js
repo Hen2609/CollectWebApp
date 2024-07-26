@@ -1,5 +1,5 @@
 const { Request, Response } = require('express');
-
+const formatters = require("../util/formatters")
 /**
  * @param {Request} req - The Express request object.
  * @param {Response} res - The Express response object.
@@ -8,7 +8,9 @@ const { Request, Response } = require('express');
  * @param {Object|undefined} data - The data passed to the template.
  */
 function render (req, res, page, title,data) {
-    res.render('layouts/mainlayout', {page, title, data, user: undefined})
+    res.render('layouts/mainlayout', {page, title, data, user: undefined, utils: {
+        formatters
+    }})
 }
 
 module.exports = render;

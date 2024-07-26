@@ -1,7 +1,19 @@
-
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
+
+/**
+ * @typedef {Object} Product
+ * @property {string} _id
+ * @property {string} name 
+ * @property {mongoose.Types.ObjectId[]} categories 
+ * @property {string} description 
+ * @property {string} price 
+ * @property {string} image 
+ */
+
+
+
 
 const ProductSchema = new Schema({
     name: { type: String, required: true },

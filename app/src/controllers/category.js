@@ -1,4 +1,3 @@
-const {Request, Response} = require("express")
 const CategoryModel = require("../models/category")
 
 /**
@@ -17,8 +16,7 @@ const CategoryModel = require("../models/category")
 async function getCategories(pattern){
     const query = {}
     if(pattern){
-        const searchPattern = new RegExp(pattern.replace(/^"|"$/g, ''), 'i');
-        query.name = searchPattern
+        query.name = new RegExp(pattern, 'i');
     }
     const categories = await CategoryModel.find(query)
     return categories
@@ -60,7 +58,7 @@ async function isCategoryNameAvailable(name, excludeId){
  */
 async function createCategory(name){
     const category = await CategoryModel.create({
-        name: name
+        name: name.trim()
     })
     return category
 }

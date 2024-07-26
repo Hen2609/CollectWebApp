@@ -1,0 +1,45 @@
+<button id="products-create-dialog-open-button">צור מוצר</button>
+<%- include("./dialogs/createDialog/index.ejs") %>
+<%- include("./dialogs/editDialog/index.ejs") %>
+<table id="products-table">
+    <thead>
+        <tr>
+            <th>פעולות</th>
+            <th>שם</th>
+            <th>קטגוריות</th>
+            <th>תיאור</th>
+            <th>מחיר</th>
+            <th>תמונה</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% products.forEach((product) => { %>
+            <tr data-product-id="<%= product._id %>">
+                <td class="actions-cell">
+                    <button class="delete-button" aria-label="מחק"><%- include('../../components/icon/index.ejs', {icon: 'delete'}) %></button>
+                    <button class="edit-button" aria-label="ערוך"><%- include('../../components/icon/index.ejs', {icon: 'edit'}) %></button>
+                </td> 
+                <td><%=product.name%></td> 
+                <td>
+                    <% product.categories.forEach((category, i) => { %>
+                        <% const name = categories.find((cat) => cat._id.toString() === category.toString())?.name %>
+                        <% if(name) { %>
+                            <p><%= name %><% let seprator = i > 0 ? "," : ""%><%= seprator %></p>
+                        <% } %>
+                    <% }) %>
+                </td> 
+                <td><%=product.description%></td> 
+                <td>
+                    <%=utils.formatters.currency(product.price)%>
+                </td> 
+                <td>
+                    <img src="<%- product.image %>" alt="<%- product.name %>" width="160"/>
+                </td> 
+                <td></td> 
+            </tr>    
+        <% }) %>
+    </tbody>
+</table>
+<script type="module">
+     <%- include('./script.js') %>
+</script>

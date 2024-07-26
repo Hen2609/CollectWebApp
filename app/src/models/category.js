@@ -1,8 +1,7 @@
 /**
  * @typedef {Object} Category
- * @property {string} _id - The unique identifier of the category
- * @property {string} name - The name of the category
- * // Add other properties as needed
+ * @property {string} _id
+ * @property {string} name 
  */
 
 
