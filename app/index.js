@@ -14,7 +14,7 @@ const port = process.env.NODE_DOCKER_PORT || 8080;
 
 app.set('view engine', 'ejs');
 app.set("views", "./src/views")
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.urlencoded({extended: true, limit: '10mb' }))
 app.use(bodyParser.json())
 
 app.use(mongoSanitize())
@@ -22,6 +22,9 @@ app.use(session({
   secret: process.env.WEB_APP_COOKIE_SECRET,
   resave: false,
   saveUninitialized: false,
+  cookie: {
+    httpOnly: true
+  }
 }))
 app.use('/', routes)
 

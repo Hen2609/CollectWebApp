@@ -5,7 +5,6 @@ function getSideBarState(){
 
 function sideBarToggle(){
     const state = getSideBarState()
-    console.log('state',state)
     updateSideBarState(!state)
 }
 /** 

@@ -2,7 +2,35 @@
 <dialog id="products-create-dialog">
     <button id="products-create-dialog-close-button" autofocus>Close</button>
     <form id="products-create-dialog-form">
-        <input type="text" name="name" placeholder="שם" required/>
+        <fieldset>
+            <legend>פרטים כלליים</legend>
+            <label for="product-create-dialog-product-name">שם</label>
+            <input type="text" id="product-create-dialog-product-name" name="name" placeholder="ישראל ישראלי" required/>
+            <label for="product-create-dialog-product-description">תיאור</label>
+            <textarea id="product-create-dialog-product-description" name="description" required placeholder="מוצר מדהים" maxlength="255" rows="5" cols="51"> </textarea>
+            <label for="product-create-dialog-product-price">מחיר</label>
+            <input type="number" id="product-create-dialog-product-price" name="price" placeholder="99.99" required step="0.01"/> 
+            <label for="product-create-dialog-product-image-upload">תמונה</label>
+            <input type="file" id="product-create-dialog-product-image-upload" accept="image/*"/>
+            <input type="hidden" id="product-create-dialog-product-image" name="image"/>
+            <img id="product-create-dialog-product-image-preview" src="" width="160" aria-label="תמונת מוצר"/>
+        </fieldset>
+        <fieldset>
+            <legend>קטגוריות</legend>
+            <label for="products-create-dialog-categories-list">הוסף/צור קטגוריה</label>
+            <input type="text" id="product-create-dialog-category-search" list="products-create-dialog-categories-list" autocomplete="off"/>
+            <datalist id="products-create-dialog-categories-list">
+                <% categories.forEach((cat) => { %>
+                    <option value="<%-cat.name%>" data-id="<%-cat._id%>"></option>
+                <%  }) %>
+            </datalist>
+            <button type="button" id="products-create-dialog-categories-add-category" aria-label="הוסף/צור קטגוריה">
+                <span><%- include('../../../../../views/components/icon/index.ejs', {icon: 'add'}) %></span>
+            </button>
+            <div id="products-create-dialog-categories-chips">
+
+            </div>
+        </fieldset>
         <button type="submit">צור מוצר</button>
     </form>
 </dialog>

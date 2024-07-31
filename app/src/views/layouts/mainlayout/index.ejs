@@ -44,6 +44,8 @@
     </footer>
 </body>
 <script>
+    const currency = new Intl.NumberFormat("he-IL", { style: "currency", currency: "ILS", minimumFractionDigits: 0}).format;
+    window.formatters = {currency};
     <%- include('./script.js') %>
 </script>
 </html>

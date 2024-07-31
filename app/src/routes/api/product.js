@@ -50,11 +50,15 @@ router.post('/', async (req, res) => {
     if(!req.body.price){
         return res.status(400).json({error: "Must supply price", code: 4})
     }
+    const price = parseFloat(req.body.price)
+    if(isNaN(price)){
+        return res.status(400).json({error: "Price must be a number", code: 5})
+    }
     const valid_name = await isProductNameAvailable(req.body.name)
     if(!valid_name){
-        return res.status(400).json({error: "duplicate product name", code: 5})
+        return res.status(400).json({error: "duplicate product name", code: 6})
     }
-    const product = await createProduct(req.body.name.trim(),req.body.categories,req.body.description,req.body.price,req.body.image)
+    const product = await createProduct(req.body.name.trim(),req.body.categories,req.body.description,price,req.body.image)
     return res.status(201).json(product);
 });
 router.put('/', async (req,res) => {
@@ -73,16 +77,19 @@ router.put('/', async (req,res) => {
     if(!req.body.price){
         return res.status(400).json({error: "Must supply price", code: 5})
     }
-
+    const price = parseFloat(req.body.price)
+    if(isNaN(price)){
+        return res.status(400).json({error: "Price must be a number", code: 6})
+    }
     const nameAvailable = await isProductNameAvailable(req.body.name, req.body.id)
     if(!nameAvailable){
-        return res.status(400).json({error: "duplicate product name", code: 6})
+        return res.status(400).json({error: "duplicate product name", code: 7})
     }
 
-    const updated = await updateProduct(req.body.id, req.body.name.trim(),req.body.categories,req.body.description,req.body.price,req.body.image);
+    const updated = await updateProduct(req.body.id, req.body.name.trim(),req.body.categories,req.body.description,price,req.body.image);
 
     if (!updated) {
-        return res.status(404).json({ error: "Product not found", code: 7 });
+        return res.status(404).json({ error: "Product not found", code: 8 });
     }
     return res.sendStatus(201)
 });

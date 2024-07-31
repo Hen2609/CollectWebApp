@@ -1,5 +1,5 @@
 <button id="products-create-dialog-open-button">צור מוצר</button>
-<%- include("./dialogs/createDialog/index.ejs") %>
+<%- include("./dialogs/createDialog/index.ejs", {categories}) %>
 <%- include("./dialogs/editDialog/index.ejs") %>
 <table id="products-table">
     <thead>
@@ -24,7 +24,7 @@
                     <% product.categories.forEach((category, i) => { %>
                         <% const name = categories.find((cat) => cat._id.toString() === category.toString())?.name %>
                         <% if(name) { %>
-                            <p><%= name %><% let seprator = i > 0 ? "," : ""%><%= seprator %></p>
+                            <p><%= name %><% let seprator = i !== product.categories.length - 1 ? "," : ""%><%= seprator %></p>
                         <% } %>
                     <% }) %>
                 </td> 
@@ -33,7 +33,9 @@
                     <%=utils.formatters.currency(product.price)%>
                 </td> 
                 <td>
-                    <img src="<%- product.image %>" alt="<%- product.name %>" width="160"/>
+                    <% if(product.image) {%>
+                        <img src="<%- product.image %>" alt="<%- product.name %>" width="160"/>
+                    <% } %>
                 </td> 
                 <td></td> 
             </tr>    
