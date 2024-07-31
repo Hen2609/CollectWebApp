@@ -1,6 +1,5 @@
-<button id="products-create-dialog-open-button">צור מוצר</button>
+<button id="product-dialog-open-button">צור מוצר</button>
 <%- include("./dialogs/createDialog/index.ejs", {categories}) %>
-<%- include("./dialogs/editDialog/index.ejs") %>
 <table id="products-table">
     <thead>
         <tr>
@@ -43,5 +42,36 @@
     </tbody>
 </table>
 <script type="module">
-     <%- include('./script.js') %>
+    window.createCategoryChip = function createCategoryChip(categoryId, categoryName){
+
+        const hiddenInput = $('<input>').attr({
+            type: "hidden",
+            name: "categories",
+            class: categoryId,
+            value: categoryId
+        })
+        const buttonContent = $('<span>').html(categoryName.concat(' ','<span class="material-symbols-outlined">close</span>')) 
+        const button = $('<button>').attr({
+            'data-category-id': categoryId,
+            class: "category-remove-button",
+            type: "button"
+        })
+        .append(buttonContent)
+        return {
+            hiddenInput,
+            button
+        }
+    }
+    window.toggleCategoryAvailable = function(category_id) {
+    const option = $("#product-dialog-categories-list").find('option').filter((_,option) => {
+        return option.dataset.id === category_id
+    })?.[0]
+    if(!option) return
+    if(option.getAttribute('disabled')){
+        option.removeAttribute('disabled')
+    }else {
+        option.setAttribute('disabled',true)
+    }
+}
+    <%- include('./script.js') %>
 </script>

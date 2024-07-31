@@ -1,15 +1,24 @@
-const createDialog = $("#products-create-dialog")[0]
+const createDialog = $("#product-dialog")[0]
 const editDialog = $("#products-edit-dialog")[0]
-const openCreateDialogButton = $("#products-create-dialog-open-button")
+const openCreateDialogButton = $("#product-dialog-open-button")
 const productsTable = $("#products-table tbody")
+const categoriesOptions = $("#product-dialog-categories-list")
+const categoryChips = $("#product-dialog-categories-chips")
 
 openCreateDialogButton.on("click", () => {
+    createDialog.setAttribute('data-mode','create')
+    $('#product-dialog-form input[name="id"]').val('')
+    $('#product-dialog-form input[name="name"]').val('')
+    $('#product-dialog-form textarea[name="description"]').val('')
+    $('#product-dialog-form input[name="price"]').val('')
+    $('#product-dialog-form input[name="image"]').val('')
+    $('#product-dialog-form img').attr({src: ''})
+    categoryChips.empty()
     createDialog.showModal();
 })
 
 productsTable.on("click", (e) => {
     const row = $(e.target).closest('tr')?.[0]
-    const name = row.querySelector("td:nth-child(2)")
     if(!row){
         return
     }
@@ -26,8 +35,34 @@ productsTable.on("click", (e) => {
         }
     }
     else if($(e.target).closest('button.edit-button').length > 0){
-        $('#products-edit-dialog-form input[name="id"]').val(row.dataset.productId)
-        $('#products-edit-dialog-form input[name="name"]').val(name.textContent)
-        editDialog.showModal()
+        const name = row.querySelector("td:nth-child(2)")?.textContent
+        const description = row.querySelector("td:nth-child(4)")?.textContent
+        const price_string = row.querySelector("td:nth-child(5)")?.textContent.match(/\d+\.?\d*/)
+        const price = price_string ? parseFloat(price_string) : 0
+        const image = row.querySelector("img")?.getAttribute("src")
+        console.log('row',row)
+        const product_categories = Array.from(row.querySelectorAll("p")).map((cat) => {
+            return cat.textContent.split(",")[0]
+        })
+        const all_categories = categoriesOptions.find('option').filter((_,opt) => product_categories.includes(opt.value))
+        .map((_,opt) => ({id: opt.dataset.id, name: opt.value})).get()
+
+
+        createDialog.setAttribute('data-mode','edit')
+        $('#product-dialog-form input[name="id"]').val(row.dataset.productId)
+        $('#product-dialog-form input[name="name"]').val(name)
+        $('#product-dialog-form textarea[name="description"]').val(description)
+        $('#product-dialog-form input[name="price"]').val(price)
+        $('#product-dialog-form input[name="image"]').val(image)
+        $('#product-dialog-form img').attr({src: image})
+        categoryChips.empty()
+        all_categories.forEach(cat => {
+            const { button, hiddenInput } = window.createCategoryChip(cat.id, cat.name)
+            categoryChips.append(hiddenInput)
+            categoryChips.append(button)
+            window.toggleCategoryAvailable(cat.id)
+        })
+
+        createDialog.showModal()
     }
 })

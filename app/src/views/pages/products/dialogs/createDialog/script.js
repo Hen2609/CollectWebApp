@@ -1,30 +1,16 @@
-const dialog = $("#products-create-dialog")[0]
-const closeButton = $("#products-create-dialog-close-button")
-const form =  $("#products-create-dialog-form")
+const dialog = $("#product-dialog")[0]
+const closeButton = $("#product-dialog-close-button")
+const form =  $("#product-dialog-form")
 const productsTable = $("#products-table tbody")
 
-const imageUploadButton = $("#product-create-dialog-product-image-upload")
-const productImage = $("#product-create-dialog-product-image")
-const imagePreview = $("#product-create-dialog-product-image-preview")
+const imageUploadButton = $("#product-dialog-product-image-upload")
+const productImage = $("#product-dialog-product-image")
+const imagePreview = $("#product-dialog-product-image-preview")
 
-const addCategoryButton = $("#products-create-dialog-categories-add-category")
-const categoriesSearch = $('#product-create-dialog-category-search');
-const categoriesOptions = $("#products-create-dialog-categories-list")
-const categoryChips = $("#products-create-dialog-categories-chips")
-
-
-
-const toggleCategoryAvailable = (category_id) => {
-    const option = categoriesOptions.find('option').filter((_,option) => {
-        return option.dataset.id === category_id
-    })?.[0]
-    if(!option) return
-    if(option.getAttribute('disabled')){
-        option.removeAttribute('disabled',disabled)
-    }else {
-        option.setAttribute('disabled')
-    }
-}
+const addCategoryButton = $("#product-dialog-categories-add-category")
+const categoriesSearch = $('#product-dialog-category-search');
+const categoriesOptions = $("#product-dialog-categories-list")
+const categoryChips = $("#product-dialog-categories-chips")
 
 closeButton.on("click", () => {
     dialog.close();
@@ -45,7 +31,7 @@ imageUploadButton.on("change", (e) => {
 })
 
 addCategoryButton.on("click", () => {
-
+    if(!categoriesSearch.val()) return;
     const categoryName = categoriesSearch.val().trim();
     const selectedCategory = categoriesOptions.find('option').filter((_,option) => {
         return option.value === categoryName
@@ -63,23 +49,24 @@ addCategoryButton.on("click", () => {
             }
         })
     }
-    const hiddenInput = $('<input>').attr({
-        type: "hidden",
-        name: "categories",
-        class: categoryId,
-        value: categoryId
-    })
-    const buttonContent = $('<span>').html(categoryName.concat(' ','<span class="material-symbols-outlined">close</span>')) 
-    const button = $('<button>').attr({
-        'data-category-id': categoryId,
-        class: "category-remove-button",
-        type: "button"
-    })
-    .append(buttonContent)
+    const { button, hiddenInput } = window.createCategoryChip(categoryId, categoryName)
+    // const hiddenInput = $('<input>').attr({
+    //     type: "hidden",
+    //     name: "categories",
+    //     class: categoryId,
+    //     value: categoryId
+    // })
+    // const buttonContent = $('<span>').html(categoryName.concat(' ','<span class="material-symbols-outlined">close</span>')) 
+    // const button = $('<button>').attr({
+    //     'data-category-id': categoryId,
+    //     class: "category-remove-button",
+    //     type: "button"
+    // })
+    // .append(buttonContent)
     categoryChips.append(hiddenInput)
     categoryChips.append(button)
     categoriesSearch.val('')
-    toggleCategoryAvailable(categoryId)
+    window.toggleCategoryAvailable(categoryId)
 })
 
 categoryChips.on("click", (e) => {
@@ -93,10 +80,11 @@ categoryChips.on("click", (e) => {
 })
 
 form.submit(function(e) {
-    e.preventDefault();
+    e.preventDefault(); 
+    const method = dialog.dataset.mode === "create" ? "POST" : "PUT"
     var form = $(this);
     $.ajax({
-        type: "POST",
+        type: method,
         url: "/api/product",
         data: form.serialize(),
         success: function(data)
