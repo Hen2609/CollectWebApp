@@ -1,6 +1,6 @@
 const express = require('express');
 const { ObjectId } = require('mongodb');
-
+const {renderComponent} = require("../../util/render")
 const router = express.Router();
 const {
     isProductNameAvailable,
@@ -10,6 +10,16 @@ const {
     getProduct,
     getProducts
 } = require('../../controllers/product');
+router.get('/card/:id', async(req, res) => {
+    if(!req.params.id){
+        return res.status(400).json({error: "must supply product id", code: 1})
+    }
+    const product = await getProduct(req.params.id)
+    if (!product) {
+        return res.status(404).json({ error: "Product not found", code: 2 });
+    }
+    renderComponent(req,res,'product-card', {product, addButtonText: "עדכן עגלה"})
+})
 
 router.get('/all', async (req, res) => {
     const name = req.query?.name?.replaceAll(/^"|"$/g,'')

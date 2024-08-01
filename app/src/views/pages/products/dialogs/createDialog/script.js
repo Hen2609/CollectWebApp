@@ -50,19 +50,6 @@ addCategoryButton.on("click", () => {
         })
     }
     const { button, hiddenInput } = window.createCategoryChip(categoryId, categoryName)
-    // const hiddenInput = $('<input>').attr({
-    //     type: "hidden",
-    //     name: "categories",
-    //     class: categoryId,
-    //     value: categoryId
-    // })
-    // const buttonContent = $('<span>').html(categoryName.concat(' ','<span class="material-symbols-outlined">close</span>')) 
-    // const button = $('<button>').attr({
-    //     'data-category-id': categoryId,
-    //     class: "category-remove-button",
-    //     type: "button"
-    // })
-    // .append(buttonContent)
     categoryChips.append(hiddenInput)
     categoryChips.append(button)
     categoriesSearch.val('')

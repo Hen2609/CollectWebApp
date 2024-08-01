@@ -1,5 +1,6 @@
 :root {
     --sideBarWidth: 10rem;
+    --footer-height: 120px;
 }
 body {
     margin: 0;
@@ -30,8 +31,29 @@ body {
         display: flex;
         gap: 5px;
         align-items: center;
-        
         padding-inline-end: 10vw;
+        #signup-button, #login-button {
+            anchor-name: --login_anchor;
+        }
+        #signup-popover, #login-popover {
+            position-anchor: --login_anchor;
+            inset-block-start: anchor(--login_anchor bottom);
+            inset-inline-start: anchor(--login_anchor right);
+            margin-block-start: 10px;
+        }
+        #cart {
+            position: relative;
+            #cart-badge {
+                position: absolute;
+                left: -10px;
+                bottom: -5px;
+                background-color: blue;
+                color: white;
+                border-radius: 50%;
+                padding-block: 1px;
+                padding-inline: 3px;
+            }
+        }
     }
 }
 [data-drawer-open="false"] {
@@ -74,10 +96,20 @@ main {
     margin-block-start: 10px;
     margin-inline-start: calc(var(--sideBarWidth) + 10px);
     transition: margin-inline-start 0.3s ease-out;
+    --min-page-height: calc(85vh - var(--footer-height));
+    min-height: var(--min-page-height);
 
 }
 
 footer {
+    display: flex;
     margin-inline-start: calc(var(--sideBarWidth) + 10px);
     transition: margin-inline-start 0.3s ease-out;
+    height: var(--footer-height);
+    border-block-start: 1px solid black;
+    #map {
+        height: 100%;
+        width: 300px;
+      }
+      
 }

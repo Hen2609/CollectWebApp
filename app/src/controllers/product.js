@@ -19,7 +19,7 @@ async function getProducts(namePattern, categories){
     if(namePattern){
         query.name = new RegExp(namePattern, 'i');
     }
-    if(categories){
+    if(categories && categories.length > 0){
         query.categories = { $in: categories }
     }
     const products = await ProductModel.find(query)

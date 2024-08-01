@@ -1,0 +1,11 @@
+<form div class="cart-header">
+    <input type="hidden" name="user" value="<%- layout?.user?.id %>"/>
+    <input type="hidden" name="date" value="<%- new Date().toLocaleDateString('he-IL') %>"/>
+    <canvas height="100" width="300" id="signature-pad"></canvas>
+</form> 
+<div id="cart-items">
+    <h2>העגלה ריקה</h2>
+</div>
+<script type="module">
+    <%- include("./script.js") %>
+</script>

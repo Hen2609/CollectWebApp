@@ -1,0 +1,20 @@
+.product-card {
+    border: 1px solid black;
+    height: fit-content;
+    padding: 5px;
+    h1 {
+        margin: 5px;
+    }
+    img {
+        max-height: 150px;
+        object-fit: scale-down;
+        width: calc(100% - 10px)
+    }
+    .add-to-cart {
+        display: flex;
+        gap: 10px;
+        input[type="number"]{
+            width: 35px;
+        }
+    }
+}

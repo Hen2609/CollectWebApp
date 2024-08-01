@@ -1,0 +1,26 @@
+<div class="homepage">
+    <form class="filters">
+        <input type="text" id="free-search" placeholder="חיפוש חופשי" aria-label="חיפוש חופשי" name="search"/>
+        <button type="submit" id="filter-button">
+            <span>
+                סנן
+            </span>
+        </button>
+        <% categories.forEach(cat => { %>
+            <label for="<%-cat._id%>"><%= cat.name %></label>
+            <input type="checkbox" id="<%- cat._id %>" name="categories" value="<%-cat._id %>"/>
+        <% }) %>
+    </form>
+    <div class="products">
+        <% products.forEach(product => { %>
+            <%- include("../../components/product-card/index.ejs", {product, utils, addButtonText: "הוסף לעגלה"}) %>
+        <% }) %>
+    </div>
+</div>
+<script type="module">
+    <%- include("./script.js") %>
+</script>
+<style>
+    <%- include('./style.css') %>
+    <%- include('../../components/product-card/style.css') %>
+</style>

@@ -21,9 +21,9 @@ app.use(mongoSanitize())
 app.use(session({
   secret: process.env.WEB_APP_COOKIE_SECRET,
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
   cookie: {
-    httpOnly: true
+    httpOnly: true,
   }
 }))
 app.use('/', routes)

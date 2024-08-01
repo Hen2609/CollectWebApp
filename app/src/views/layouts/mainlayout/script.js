@@ -36,3 +36,59 @@ window.addEventListener('DOMContentLoaded', () => {
         }
       });
 })
+
+$("#signup-submit-button").on("click", () => {
+    const form = $("#signup-form")
+    $.ajax({
+        method: "POST",
+        url: "/api/user/signup",
+        data: form.serialize(),
+        success: function() {
+            window.location.reload()
+        },
+        failure: function( error ){
+            console.error(error)
+        }
+      });
+})
+
+$("#login-submit-button").on("click", () => {
+    const form = $("#login-form")
+    $.ajax({
+        method: "POST",
+        url: "/api/user/login",
+        data: form.serialize(),
+        success: function() {
+            window.location.reload();
+        },
+        failure: function( error ){
+            console.error(error)
+        }
+    });
+})
+
+$("#signout-button").on("click", () => {
+    $.ajax({
+        method: "POST",
+        url: "/api/user/signout",
+        success: function() {
+            window.location.reload();
+        },
+        failure: function( error ){
+            console.error(error)
+        }
+    })
+});
+function updateCart(){
+    const cart = JSON.parse(window.localStorage.getItem("cart"))
+    const itemsCount = Object.keys(cart).reduce((res,cur) => {
+        res += cart[cur]
+        return res
+    },0)
+    $("#cart-badge").html(itemsCount)
+}
+document.addEventListener("DOMContentLoaded", updateCart)
+document.addEventListener("cartChanged", () => {
+    updateCart()
+});
+  
