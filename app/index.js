@@ -26,6 +26,7 @@ app.use(session({
     httpOnly: true,
   }
 }))
+app.use(express.static('public'))
 app.use('/', routes)
 
 app.listen(port, () => {

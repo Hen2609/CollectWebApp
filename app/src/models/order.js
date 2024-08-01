@@ -1,25 +1,22 @@
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
-/** 
- *  @typedef {Object} OrderProduct
- *  @property {import("./product").Product} product
- *  @property {Number} quantity
- */
 /**
- * @typedef {Object} Order
+ * @typedef {Object} Order  
  * @property {string} user 
- * @property {Array<OrderProduct>} products 
+ * @property {Array<import("mongoose").ObjectId>} products 
  * @property {string} signature 
+ * @property {number} price 
  * @property {Date} date 
  */
 
 
 
 const OrderSchema = new Schema({
-    user: { type: String, required: true },
+    user: { type: String, required: false },
     products: { type: Array, required: true },
     signature: {type: String, required: true },
+    price: {type: Number, required: true },
     date: {type: Date, required: true }
 });
 

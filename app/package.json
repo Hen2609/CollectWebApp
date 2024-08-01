@@ -13,6 +13,7 @@
     "body-parser": "^1.20.2",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
-    "express-mongo-sanitize": "^2.2.0"
+    "express-mongo-sanitize": "^2.2.0",
+    "twitter-api-v2": "^1.17.2"
   }
 }

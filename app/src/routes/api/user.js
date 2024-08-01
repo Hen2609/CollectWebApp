@@ -22,12 +22,15 @@ router.post("/signup", async (req, res) => {
     if(!req.body.password){
         return res.status(400).json({error: "Must supply password", code: 3})
     }
+    if(doesUserExist(req.body.id)){
+        return res.status(400).json({error: "duplicate user", code: 4})
+    }
     const user = await signUp(req.body.id, req.body.name,  req.body.password)
     if(user){
         req.session.user = user
         return res.status(201).json(user)
     }else  {
-        return res.status(400).json({error: "failed to signup", code: 4})
+        return res.status(400).json({error: "failed to signup", code: 5})
     }
 })
 
@@ -41,7 +44,6 @@ router.post("/login", async (req, res) => {
     const user = await login(req.body.id, req.body.password)
     if(user){
         req.session.user = user
-        console.log('req',req.session.cookie)
         return res.status(201).json(user)
     }else  {
         return res.status(400).json({error: "failed to login", code: 3})

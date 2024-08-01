@@ -3,7 +3,6 @@ const closeButton = $("#categories-create-dialog-close-button")
 const form =  $("#categories-create-dialog-form")
 const categoriesTable = $("#categories-table tbody")
 
-console.log(form)
 
 closeButton.on("click", () => {
     dialog.close();
@@ -25,5 +24,19 @@ form.submit(function(e) {
             categoriesTable.append(newRow)
             dialog.close()
         },
+        error: function(jqXHR) {
+            const error_code = jqXHR.responseJSON.code
+            switch(error_code){
+                case 1:
+                    alert('חובה לספק שם ')
+                    break;
+                case 2:
+                    alert('שם קטגוריה כפול')
+                    break;
+                default:
+                    alert('שגיאה לא ידוע ביצירת קטגוריה')
+                    break;
+            }
+        }
     });
 })

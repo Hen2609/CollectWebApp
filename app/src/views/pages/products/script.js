@@ -31,6 +31,9 @@ productsTable.on("click", (e) => {
                 {
                     row.remove()
                 },
+                error: function(jqXHR) {
+                    alert('שגיאה לא ידועה')
+                }
             });
         }
     }
@@ -40,7 +43,6 @@ productsTable.on("click", (e) => {
         const price_string = row.querySelector("td:nth-child(5)")?.textContent.match(/\d+\.?\d*/)
         const price = price_string ? parseFloat(price_string) : 0
         const image = row.querySelector("img")?.getAttribute("src")
-        console.log('row',row)
         const product_categories = Array.from(row.querySelectorAll("p")).map((cat) => {
             return cat.textContent.split(",")[0]
         })

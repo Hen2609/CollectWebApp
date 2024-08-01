@@ -1,5 +1,5 @@
 <% if(user && user.name){ %>
-    <span class="user-name"><%= user.name %></span>
+    <span class="user-name">שלום <%= user.name %>!</span>
     <button id="signout-button">התנתק</button>
 <% } else{ %>  
     <button id="signup-button" popovertarget="signup-popover" >

@@ -6,7 +6,7 @@
     <p><%= product.description %></p>
     <data value="<%= product.price %>" aria-label="מחיר"><%- utils.formatters.currency(product.price) %></strong>
     <div class="add-to-cart">
-        <input type="number" min="1" name="ammount" aria-label="כמות" value="1"/>
+        <input type="number" min="0" name="ammount" aria-label="כמות" value="1"/>
         <button class="add-to-cart-button">
             <%= addButtonText %>
         </button>

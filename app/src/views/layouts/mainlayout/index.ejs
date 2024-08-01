@@ -14,7 +14,9 @@
     <!-- Navbar -->
     <nav class="navbar">
         <button id="sidebar-toggle"><span><%- include('../../components/icon/index.ejs', {icon: "menu"}) %></span></button>
-        <h1 class="navbar-title">קידוש Squad</h1>
+        <h1 class="navbar-title">
+            <a href="/">קידוש Squad</a>
+        </h1>
         <div class="navbar-edge">
             <p id="current-date"></p>
             <%- include('./userLogin.ejs', user) %>
@@ -26,10 +28,15 @@
     <aside class="sidebar" id="sidebar" aria-hidden="true">
         <button id="close-sidbar"><span><%- include('../../components/icon/index.ejs',{icon: 'close'}) %></span></button>
         <ul class="nav-list">
-            <li><a href="#">a</a></li>
-            <li><a href="#">b</a></li>
-            <li><a href="#">c</a></li>
-            <li><a href="#">d</a></li>
+            <% if( user?.type === "admin" ) {%>
+                <li><a href="/product">ניהול מוצרים</a></li>
+                <li><a href="/category">ניהול קטגוריות</a></li>
+                <li><a href="/stats">סטטיסטיקה</a></li>
+            <%  } %>
+            <% if( user ) {%>
+                <li><a href="/orders">היסטוריית הזמנות</a></li>
+            <%  } %>
+            <li><a href="/privacy">מדיניות פרטיות</a></li>
         </ul>
     </aside>
 
@@ -44,7 +51,7 @@
             <p>הסניפים שלנו</p>
             <div id="map"></div>
         </div>
-        <p>&copy; 2024 Store Name. Credits to Henshay.</p>
+        <p>&copy; 2024 Kidush Squad. Credits to Henshay.</p>
     </footer>
 </body>
 <script>

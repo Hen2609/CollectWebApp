@@ -1,0 +1,26 @@
+<% if(admin){ %>
+    <h1>הזמנות החנות</h1>
+<% } else { %>
+    <h1>הזמנות שלי</h1>
+<% } %>
+<table>
+    <thead>
+        <tr>
+            <th>משתמש</th>
+            <th>תאריך</th>
+            <th>סכום</th>
+            <th>חתימה</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% orders.forEach(order => { %>
+            <tr>
+                <td><%= order.user %></td>
+                <% const date = new Date(order.date).toLocaleDateString('he-IL'); %>
+                <td><%= date %></td>
+                <td><%= order.price %></td>
+                <td><img src="<%- order.signature %>" width="160"/></td>
+            </tr>
+        <% }) %>
+    </tbody>
+</table>

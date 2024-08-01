@@ -1,6 +1,8 @@
 const ProductModel = require("../models/product")
 const mongoose = require("mongoose");
 
+
+ 
 /**
  * @fileoverview This file defines the getProducts function.
  * @requires ../models/product

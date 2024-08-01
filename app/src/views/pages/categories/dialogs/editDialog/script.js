@@ -3,7 +3,6 @@ const closeButton = $("#categories-edit-dialog-close-button")
 const form =  $("#categories-edit-dialog-form")
 const categoriesTable = $("#categories-table tbody")
 
-console.log(form)
 
 closeButton.on("click", () => {
     dialog.close();
@@ -26,5 +25,25 @@ form.submit(function(e) {
             input.val('')
             dialog.close();
         },
+        error: function(jqXHR) {
+            const error_code = jqXHR.responseJSON.code
+            switch(error_code){
+                case 1:
+                    alert('חובה לספק מזהה קטגוריה')
+                    break;
+                case 2:
+                    alert('חובה לספק שם ')
+                    break;
+                case 3:
+                    alert('שם תפוס')
+                    break;
+                case 4:
+                    alert('קטגוריה לא נמצאה')
+                    break;
+                default:
+                    alert('שגיאה לא ידוע בעדכון קטגוריה')
+                    break;
+            }
+        }
     });
 })

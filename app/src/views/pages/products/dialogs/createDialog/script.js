@@ -46,6 +46,20 @@ addCategoryButton.on("click", () => {
             },
             success(result){
                 categoryId = result._id
+            },
+            error: function(jqXHR) {
+                const error_code = jqXHR.responseJSON.code
+                switch(error_code){
+                    case 1:
+                        alert('חובה לספק שם ')
+                        break;
+                    case 2:
+                        alert('שם קטגוריה כפול')
+                        break;
+                    default:
+                        alert('שגיאה לא ידוע ביצירת קטגוריה')
+                        break;
+                }
             }
         })
     }
@@ -85,9 +99,7 @@ form.submit(function(e) {
                     return option.dataset.id === cat
                 })?.[0]?.value
             })
-            console.log(categories)
             const paragraphs = categories.map((val,i) => '<p>' + val + (i !== categories.length - 1 ? ',' : '') +'</p>')
-            console.log(paragraphs)
             newRow.find("td").eq(2).html(paragraphs); 
             newRow.find("td").eq(3).text(data.description); 
             newRow.find("td").eq(4).text(window.formatters.currency(data.price)); 
@@ -99,5 +111,60 @@ form.submit(function(e) {
             productsTable.append(newRow)
             dialog.close()
         },
+        error: function(jqXHR) {
+            const error_code = jqXHR.responseJSON.code
+            if(method === "POST"){
+                switch(error_code){
+                    case 1:
+                        alert('חובה לספק שם מוצר')
+                        break;
+                    case 2:
+                        alert('חובה לספק קטגוריות')
+                        break;
+                    case 3:
+                        alert('חובה לספק תיאור')
+                        break;
+                    case 4:
+                        alert('חובה לספק מחיר')
+                        break;
+                    case 5:
+                        alert('מחיר חייב להיות מספר')
+                        break;
+                    case 6:
+                        alert('שם מוצר כפול')
+                        break;
+                    default:
+                        alert('שגיאה לא ידועה')
+                        break;
+                }
+            }else {
+                switch(error_code){
+                    case 1:
+                        alert('חובה לספק מזהה מוצר')
+                        break;
+                    case 2:
+                        alert('חובה לספק שם מוצר')
+                        break;
+                    case 3:
+                        alert('חובה לספק קטגוריות')
+                        break;
+                    case 4:
+                        alert('חובה לספק תיאור')
+                        break;
+                    case 5:
+                        alert('חובה לספק מחיר')
+                        break;
+                    case 6:
+                        alert('מחיר חייב להיות מספר')
+                        break;
+                    case 7:
+                        alert('שם מוצר כפול')
+                        break;
+                    default:
+                        alert('שגיאה לא ידועה')
+                        break;
+                }
+            }
+        }
     });
 })

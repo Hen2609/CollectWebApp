@@ -1,0 +1,10 @@
+video {
+    height: 300px;
+}
+section {
+    p {
+        column-count: 3;
+        column-rule-style: dashed;
+
+    }
+}

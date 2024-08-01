@@ -25,6 +25,10 @@ body {
         font-size: 2rem;
         margin: 0;
         padding: 0;
+        a {
+            color: black;
+            text-decoration: none;
+        }
     }
     .navbar-edge {
         grid-column: 4;
@@ -72,13 +76,25 @@ body {
 .sidebar {
     position: fixed;
     height: 95vh;
-    background-color: aqua;
+    background-color: #8697c4;
     width: var(--sideBarWidth);
     z-index: 1;
     /* RTL-ONLY */
     right: 0; 
     box-shadow: rgba(0, 0, 0, 0.1) -4px 1px 3px 3px;
     transition: right 0.3s ease-out;
+    ul {
+        padding: 0;
+        list-style: none;
+        padding-inline-start: 5px;
+        li {
+            margin-block: 10px;
+            a {
+                text-decoration: none;
+                color: black;
+            }
+        }
+    }
     #close-sidbar {
         position: absolute;
         left: 0;

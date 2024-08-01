@@ -1,7 +1,18 @@
-<form div class="cart-header">
+<form id="cart-header">
     <input type="hidden" name="user" value="<%- layout?.user?.id %>"/>
     <input type="hidden" name="date" value="<%- new Date().toLocaleDateString('he-IL') %>"/>
-    <canvas height="100" width="300" id="signature-pad"></canvas>
+    <input type="hidden" name="signature"/>
+    <input type="hidden" name="price"/>
+    <div class="signature-pad-wrap">
+        <canvas height="100" width="300" id="signature-pad"></canvas>
+        <button type="button" id="clear-pad">נקה חתימנה</button>
+    </div>
+    <data id="cart-pice" aria-label="מחיר">
+
+    </data>
+    <button id="cart-approve-order-button" type="submit">
+        אשר הזמנה
+    </button>
 </form> 
 <div id="cart-items">
     <h2>העגלה ריקה</h2>

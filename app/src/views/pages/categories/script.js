@@ -22,6 +22,9 @@ categoriesTable.on("click", (e) => {
                 {
                     row.remove()
                 },
+                error: function(jqXHR) {
+                    alert('שגיאה לא ידוע בהרשמה')
+                }
             });
         }
     }

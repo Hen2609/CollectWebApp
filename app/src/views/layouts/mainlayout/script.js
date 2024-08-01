@@ -30,8 +30,7 @@ window.addEventListener('DOMContentLoaded', () => {
         success: function( data ) {
             $('#current-date').html(data.hebrew);
         },
-        failure: function( error ){
-            console.error(error)
+        error: function(){
             $('#current-date').html(new Date().toLocaleDateString('he-IL'));
         }
       });
@@ -46,8 +45,25 @@ $("#signup-submit-button").on("click", () => {
         success: function() {
             window.location.reload()
         },
-        failure: function( error ){
-            console.error(error)
+        error: function(jqXHR) {
+            const error_code = jqXHR.responseJSON.code
+            switch(error_code){
+                case 1:
+                    alert('חובה לספק מזהה משתמש')
+                    break;
+                case 2:
+                    alert('חובה לספק שם ')
+                    break;
+                case 3:
+                    alert('חובה לספק סיסמה')
+                    break;
+                case 4:
+                    alert('מזהה משתמש תפוס')
+                    break;
+                default:
+                    alert('שגיאה לא ידוע בהרשמה')
+                    break;
+            }
         }
       });
 })
@@ -61,8 +77,19 @@ $("#login-submit-button").on("click", () => {
         success: function() {
             window.location.reload();
         },
-        failure: function( error ){
-            console.error(error)
+        error: function(jqXHR) {
+            const error_code = jqXHR.responseJSON.code
+            switch(error_code){
+                case 1:
+                    alert('חובה לספק מזהה משתמש')
+                    break;
+                case 2:
+                    alert('חובה לספק סיסמה')
+                    break;
+                default:
+                    alert('שגיאה לא ידוע בהרשמה')
+                    break;
+            }
         }
     });
 })
@@ -74,8 +101,8 @@ $("#signout-button").on("click", () => {
         success: function() {
             window.location.reload();
         },
-        failure: function( error ){
-            console.error(error)
+        error: function(jqXHR) {
+            alert('שגיאה לא ידוע בהרשמה')
         }
     })
 });
