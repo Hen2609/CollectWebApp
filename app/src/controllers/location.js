@@ -1,21 +1,16 @@
-const LocationModel = require("../models/location")
-const crypto = require('crypto')
-/**
- * @fileoverview This file defines the getCategories function.
- * @requires ../models/location
- * @typedef {import('../models/location').Location} Location
- */
+const {
+    getLocations
+} = require('../services/location');
 
 /**
- * @async
- * @function getLocations
- * @returns {Promise<Location[]>}
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
  */
-async function getLocations(){
-    const locations = await LocationModel.find({}) 
-    return locations
-}
+const handleGetAllLocations = async (req, res) => {
+    const locations = await getLocations()
+    res.status(200).json(locations)
+};
 
 module.exports = {
-    getLocations
+    handleGetAllLocations
 }
