@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const {render} = require("../../utils/render")
+const {handleCartPage} = require("../../controllers/pages/cart")
 
-router.get("/", async (req,res) => {
-    render(req,res,'cart', 'עגלה', {})
-})
+
+router.get("/", handleCartPage);
 
 module.exports = router;

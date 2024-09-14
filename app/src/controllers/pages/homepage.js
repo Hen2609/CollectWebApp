@@ -8,7 +8,6 @@ const {render} = require("../../utils/render");
  * @async
  * @function handleHomepage
  * @param {import("express").Request} req - The request object, containing the body data.
- * @param {import("express-session").Session & Partial<import("express-session").SessionData>} req.session - The session object, used to handle user sessions.
  * @param {import("express").Response} res - The response object, used to send the response.
  * @return {Promise<void>} A promise that resolves when the logout process completes.
  */
