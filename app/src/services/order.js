@@ -53,7 +53,7 @@ async function getOrder(id){
  * @async
  * @function createOrder
  * @param {string} user
- * @param {import("mongoose").Types.ObjectId[]} products
+ * @param {{id: import("mongoose").Types.ObjectId, quantity: number}[]} products
  * @param {string} signature
  * @param {number} price
  * @param {Date} date
@@ -187,11 +187,39 @@ async function  ordersByUsers(){
     ]);
 }
 
+
+/**
+ * @async
+ * @function getProductsOfOrder
+ * @param {import("mongoose").Types.ObjectId} order_id
+ * @returns {Promise<Product[]>}
+ */
+async function getProductsOfOrder(order_id){
+    const res = await OrderModel.aggregate([
+        { $match: { _id: order_id } },
+        { $lookup: {
+                from: "products",
+                localField: "products.id",
+                foreignField: "_id",
+                as: "order_products"
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                order_products: 1
+            }
+        }
+    ]);
+    return res?.[0]?.order_products ?? []
+}
+
 module.exports = {
     getOrders,
     getOrder,
     createOrder,
     deleteOrder,
     ordersByProducts,
-    ordersByUsers
+    ordersByUsers,
+    getProductsOfOrder
 };

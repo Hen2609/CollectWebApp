@@ -192,5 +192,5 @@ module.exports = {
     isProductNameAvailable,
     createProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
 }

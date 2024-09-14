@@ -7,14 +7,21 @@ async function initCartItem(productId, quantity){
 
 async function initPage(){
     const cart = JSON.parse(window.localStorage.getItem("cart"))
-    const product_cards  = Object.entries(cart).map(async (entry) => {
+    const product_cards  = Object.entries(cart).map(async (entry,i) => {
         const [productId, quantity] = entry;
-        const hiddenInput = $('<input>').attr({
+        const hiddenIdInput = $('<input>').attr({
             type: 'hidden',
-            name: 'products',
+            name: `products[${i}][id]`,
             value: productId
         });
-        $("#cart-header").append(hiddenInput)
+        const hiddenQuantityInput = $('<input>').attr({
+            type: 'hidden',
+            name: `products[${i}][quantity]`,
+            value: quantity
+        });
+        const header = $("#cart-header")
+        header.append(hiddenIdInput)
+        header.append(hiddenQuantityInput)
         return initCartItem(productId,quantity)
     })
     const cards = await Promise.all(product_cards)

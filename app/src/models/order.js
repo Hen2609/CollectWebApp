@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 /**
  * @typedef {Object} Order  
  * @property {string} user 
- * @property {Array<import("mongoose").ObjectId>} products 
+ * @property {Array<{id: import("mongoose").ObjectId, quantity: number}>} products
  * @property {string} signature 
  * @property {number} price 
  * @property {Date} date 
