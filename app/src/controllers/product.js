@@ -1,123 +1,144 @@
-const ProductModel = require("../models/product")
-const mongoose = require("mongoose");
-
-
- 
-/**
- * @fileoverview This file defines the getProducts function.
- * @requires ../models/product
- * @typedef {import('../models/product').Product} Product
- */
+const mongoose = require('mongoose');
+const { getProducts, getProduct, createProduct, updateProduct, deleteProduct } = require('../services/product');
+const CustomError = require('../utils/customError');
+const {renderComponent} = require("../utils/render");
 
 /**
- * @async
- * @function getProducts
- * @param {String | undefined} namePattern
- * @param { mongoose.Types.ObjectId[] | undefined } categories
- * @returns {Promise<Product[]>}
+ * Get all products
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ * @returns {Promise<void>}
  */
-async function getProducts(namePattern, categories){
-    const query = {}
-    if(namePattern){
-        query.name = new RegExp(namePattern, 'i');
-    }
-    if(categories && categories.length > 0){
-        query.categories = { $in: categories }
-    }
-    const products = await ProductModel.find(query)
-    return products
-}
-
-/**
- * @async
- * @function getProduct
- * @param {String} id
- * @returns {Promise<Product| undefined>}
- */
-async function getProduct(id){
-    const product = await ProductModel.findById(id).exec();
-    return product
-}
-
-/** 
- * @async
- * @function isProductNameAvailable
- * @param {String} name
- * @param {String | undefined} excludeId
- * @returns {Promise<Boolean>}
- */
-async function isProductNameAvailable(name, excludeId){
-    const query = {
-        name: name.trim(),
-    }
-    if(excludeId){
-        query["_id"] = {$ne: excludeId}
-    }
-    const exist = await ProductModel.findOne(query)
-    return exist ? false : true
-}
-/**
- * @async
- * @function createProduct
- * @param {string} name 
- * @param {mongoose.Types.ObjectId[]} categories 
- * @param {string} description 
- * @param {string} price 
- * @param {string | undefined } image 
- * @returns {Promise<Product>}
- */
-async function createProduct(name, categories, description, price, image){
-    const product = await ProductModel.create({
-        name: name.trim(),
-        categories,
-        description,
-        image,
-        price
-    })
-    return product
-}
-
-/**
- * @async
- * @function updateProduct
- * @param {String} id 
- * @param {string} name 
- * @param {mongoose.Types.ObjectId[]} categories 
- * @param {string} description 
- * @param {string} price 
- * @param {string | undefined } image 
- * @returns {Promise<boolean>}
- */
-async function updateProduct(id, name, categories, description, price, image){
-    const product = await ProductModel.updateOne(
-        { _id: id },
-        { $set: { 
-            name: name.trim(),
-            categories,
-            description,
-            image,
-            price
-          }
+async function handleGetProducts(req, res) {
+    try {
+        const { name, categories } = req.query;
+        const categoryArray = categories ? categories.split(',').map(id => mongoose.Types.ObjectId.createFromHexString(id)) : undefined;
+        const products = await getProducts(name, categoryArray);
+        res.status(200).json(products);
+    } catch (error) {
+        if (error instanceof CustomError) {
+            res.status(400).json({ message: error.message, code: error.errorCode });
+        } else {
+            res.status(500).json({ message: error.message });
         }
-    );
-    return product.modifiedCount !== 0
+    }
 }
+
 /**
- * @async
- * @function deleteProduct
- * @param {String} id
- * @returns {Promise<Boolean>}
+ * Get a single product by ID
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ * @returns {Promise<void>}
  */
-async function deleteProduct(id){
-    const result = await ProductModel.findByIdAndDelete(id);
-    return result ?  true : false
+async function handleGetProduct(req, res) {
+    try {
+        const product = await getProduct(req.params.id);
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+        res.status(200).json(product);
+    } catch (error) {
+        if (error instanceof CustomError) {
+            res.status(400).json({ message: error.message, code: error.errorCode });
+        } else {
+            res.status(500).json({ message: error.message });
+        }
+    }
+}
+
+/**
+ * Create a new product
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ * @returns {Promise<void>}
+ */
+async function handleCreateProduct(req, res) {
+    try {
+        const { name, categories, description, price, image } = req.body;
+        const categoryArray = categories ? categories.map(id => mongoose.Types.ObjectId(id)) : [];
+        const product = await createProduct(name, categoryArray, description, price, image);
+        res.status(201).json(product);
+    } catch (error) {
+        if (error instanceof CustomError) {
+            res.status(400).json({ message: error.message, code: error.errorCode });
+        } else {
+            res.status(500).json({ message: error.message });
+        }
+    }
+}
+
+/**
+ * Update a product by ID
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ * @returns {Promise<void>}
+ */
+async function handleUpdateProduct(req, res) {
+    try {
+        const { name, categories, description, price, image } = req.body;
+        const categoryArray = categories ? categories.map(id => mongoose.Types.ObjectId(id)) : [];
+        const isUpdated = await updateProduct(req.params.id, name, categoryArray, description, price, image);
+
+        if (isUpdated) {
+            res.status(200).json({ message: "Product updated successfully" });
+        } else {
+            res.status(404).json({ message: "Product not found" });
+        }
+    } catch (error) {
+        if (error instanceof CustomError) {
+            res.status(400).json({ message: error.message, code: error.errorCode });
+        } else {
+            res.status(500).json({ message: error.message });
+        }
+    }
+}
+
+/**
+ * Delete a product by ID
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ * @returns {Promise<void>}
+ */
+async function handleDeleteProduct(req, res) {
+    try {
+        const isDeleted = await deleteProduct(req.params.id);
+
+        if (isDeleted) {
+            res.status(200).json({ message: "Product deleted successfully" });
+        } else {
+            res.status(404).json({ message: "Product not found" });
+        }
+    } catch (error) {
+        if (error instanceof CustomError) {
+            res.status(400).json({ message: error.message, code: error.errorCode });
+        } else {
+            res.status(500).json({ message: error.message });
+        }
+    }
+}
+
+/**
+ * Handles the request for a product card by fetching the product details and rendering the product card component.
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ * @return {Promise<void>} - A promise that resolves with no value once the request is fully handled.
+ */
+async function handleProductCard(req, res) {
+    if(!req.params.id){
+        res.status(400).json({error: "must supply product id", code: 1})
+    }
+    const product = await getProduct(req.params.id)
+    if (!product) {
+        res.status(404).json({ error: "Product not found", code: 2 });
+    }
+    renderComponent(req,res,'product-card', {product, addButtonText: "עדכן עגלה"})
 }
 
 module.exports = {
-    getProducts,
-    getProduct,
-    isProductNameAvailable,
-    createProduct,
-    updateProduct,
-    deleteProduct
-}
+    handleGetProducts,
+    handleGetProduct,
+    handleCreateProduct,
+    handleUpdateProduct,
+    handleDeleteProduct,
+    handleProductCard,
+};
