@@ -1,8 +1,8 @@
-const { Request } = require('express');
 
 /**
  * @function isAdminUser
- * @param {Request} req - The Express request object.
+ * @param {import("express").Request} req - The request object, containing the body data.
+ * @param {import("express-session").Session & Partial<import("express-session").SessionData>} req.session - The session object, used to handle user sessions.
  * @returns {Boolean} - adminUser
  */
 function isAdminUser (req) {
