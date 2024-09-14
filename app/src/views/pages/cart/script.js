@@ -2,8 +2,7 @@
 async function initCartItem(productId, quantity){
     const req = await fetch('/api/product/card/' + productId, {credentials: "include"})
     const html = await req.text()
-    const updatedHtml = html.replace(/(<input[^>]*\bvalue=")[^"]*(".*?>)/i, `$1${quantity}$2`);
-    return updatedHtml
+    return html.replace(/(<input[^>]*\bvalue=")[^"]*(".*?>)/i, `$1${quantity}$2`)
 }
 
 async function initPage(){
@@ -44,7 +43,7 @@ async function initPage(){
 function calculateCartPrice(){
     let sum = 0;
     $('.product-card').each(function() {
-        const value = parseFloat($(this).find('data[aria-label="מחיר"').val())
+        const value = parseFloat($(this).find('data[aria-label="מחיר"]').val())
         const ammount = parseFloat($(this).find('input').val())
         if(!isNaN(value) && !isNaN(ammount)){
             sum += value * ammount
@@ -88,7 +87,7 @@ function handlePointerMove(event){
     context.lineTo(positionX, positionY);
     context.stroke();
 }
-function getSigantureBase64(){
+function getSignatureBase64(){
     return canvas.toDataURL()
 }
 function clearPad(){
@@ -96,7 +95,7 @@ function clearPad(){
     toggleConfirm();
 }
 function updateSignatureInput(){
-    $('input[name="signature"]').val(getSigantureBase64())
+    $('input[name="signature"]').val(getSignatureBase64())
 }
 
 function toggleConfirm(enable){
@@ -123,25 +122,26 @@ $('#cart-header').submit(function() {
             window.location.href = "/"
         },
         error: function(jqXHR) {
+            console.error(jqXHR.responseJSON);
             const error_code = jqXHR.responseJSON.code
             switch(error_code){
-                case 1:
+                case "ORD_SRV_CREATE-1":
                     alert('לא סופקו מוצרים')
                     break;
-                case 2:
+                case "ORD_SRV_CREATE-2":
                     alert('לא סופק מחיר')
                     break;
-                case 3:
+                case "ORD_SRV_CREATE-3":
                     alert('לא סופקה חתימה')
                     break;
-                case 4:
+                case "ORD_SRV_CREATE-4":
                     alert('לא סופק תאריך הזמנה')
                     break;
-                case 5:
+                case "ORD_SRV_CREATE-5":
                     alert('מחיר חייב להיות ערך מספרי')
                     break;
                 default:
-                    alert('שגיאה לא ידוע בהרשמה')
+                    alert('שגיאה לא ידועה ביצירת הזמנה')
                     break;
             }
         }

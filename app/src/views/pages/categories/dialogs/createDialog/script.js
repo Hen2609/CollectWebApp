@@ -25,12 +25,13 @@ form.submit(function(e) {
             dialog.close()
         },
         error: function(jqXHR) {
+            console.error(jqXHR.responseJSON);
             const error_code = jqXHR.responseJSON.code
             switch(error_code){
-                case 1:
-                    alert('חובה לספק שם ')
+                case "CAT_SRV_CREATE-1":
+                    alert('חובה לספק שם')
                     break;
-                case 2:
+                case "CAT_SRV_CREATE-2":
                     alert('שם קטגוריה כפול')
                     break;
                 default:

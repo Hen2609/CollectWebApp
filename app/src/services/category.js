@@ -1,5 +1,5 @@
 
-const CustomError = require('../utils/CustomError');
+const {CustomError, CustomerErrorGenerator} = require('../utils/CustomError');
 const CategoryModel = require("../models/category")
 
 /**
@@ -33,8 +33,10 @@ const getAllCategories = async (pattern) => {
  * @throws {CustomError} - Throws a custom error if the category id is not supplied or the category is not found.
  */
 const getCategoryById = async (id) => {
+    const errorGenerator = new CustomerErrorGenerator("CAT_SRV_GET")
+
     if (!id) {
-        throw new CustomError("Must supply category id", 1);
+        throw errorGenerator.generate("Must supply category id", 1);
     }
     const category = await CategoryModel.findById(id).exec();
     if (!category) {
@@ -52,12 +54,13 @@ const getCategoryById = async (id) => {
  * @throws {CustomError} - Throws a custom error if the name is not supplied or is a duplicate.
  */
 const createCategory = async (name) => {
+    const errorGenerator = new CustomerErrorGenerator("CAT_SRV_CREATE")
     if (!name) {
-        throw new CustomError("Must supply name", 1);
+        throw errorGenerator.generate("Must supply name", 1);
     }
     const validName = await CategoryModel.exists({ name: name.trim() });
     if (validName) {
-        throw new CustomError("Duplicate category name", 3);
+        throw errorGenerator.generate("Duplicate category name", 2);
     }
     return CategoryModel.create({ name: name.trim() });
 };
@@ -72,22 +75,24 @@ const createCategory = async (name) => {
  * @throws {CustomError} - Throws a custom error if the id or name is not supplied, if the name is a duplicate, or if the category is not found.
  */
 const updateCategory = async (id, name) => {
+    const errorGenerator = new CustomerErrorGenerator("CAT_SRV_UPDATE")
+
     if (!id) {
-        throw new CustomError("Must supply id", 1);
+        throw errorGenerator.generate("Must supply category id", 1);
     }
     if (!name) {
-        throw new CustomError("Must supply name", 2);
+        throw errorGenerator.generate("Must supply name", 2);
     }
     const validName = await CategoryModel.exists({ name: name.trim(), _id: { $ne: id } });
     if (validName) {
-        throw new CustomError("Duplicate category name", 3);
+        throw errorGenerator.generate("Duplicate category name", 3);
     }
     const result = await CategoryModel.updateOne(
         { _id: id },
         { $set: { name: name.trim() } }
     );
     if (!result.matchedCount) {
-        throw new CustomError("Category not found", 4);
+        throw errorGenerator.generate("Category not found", 4);
     }
     return true;
 };
@@ -101,12 +106,13 @@ const updateCategory = async (id, name) => {
  * @throws {CustomError} - Throws a custom error if the category id is not supplied or the category is not found.
  */
 const deleteCategory = async (id) => {
+    const errorGenerator = new CustomerErrorGenerator("CAT_SRV_DELETE")
     if (!id) {
-        throw new CustomError("Must supply category id", 1);
+        throw errorGenerator.generate("Must supply category id", 1);
     }
     const result = await CategoryModel.findByIdAndDelete(id);
     if (!result) {
-        throw new CustomError("Category not found", 2);
+        throw errorGenerator.generate("Category not found", 2);
     }
     return true;
 };

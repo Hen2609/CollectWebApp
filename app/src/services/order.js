@@ -1,5 +1,5 @@
 const OrderModel = require("../models/order");
-const CustomError = require("../utils/customError");
+const {CustomError, CustomerErrorGenerator} = require("../utils/customError");
 
 /**
  * @fileoverview This file defines the getOrders function.
@@ -32,18 +32,20 @@ async function getOrders(users){
  * @throws {CustomError}
  */
 async function getOrder(id){
+    const errorGenerator = new CustomerErrorGenerator("ORD_SRV_GET")
+
     if (!id) {
-        throw new CustomError("Must Supply Order ID", 6);
+        throw errorGenerator.generate("Must Supply Order ID", 1);
     }
     let orderRes;
     try {
         [order] = await Promise.all([OrderModel.findById(id).exec()]);
         orderRes = order
     } catch (error) {
-        throw new CustomError(`Error fetching order: ${error.message}`, 8);
+        throw errorGenerator.generate(`Error fetching order: ${error.message}`, 2);
     }
     if (!orderRes) {
-        throw new CustomError(`Order not found for ID: ${id}`, 7);
+        throw errorGenerator.generate(`Order not found for ID: ${id}`, 3);
     }
 }
 
@@ -59,22 +61,23 @@ async function getOrder(id){
  * @throws {CustomError}
  */
 async function createOrder(user, products, signature, price, date){
+    const errorGenerator = new CustomerErrorGenerator("ORD_SRV_CREATE")
     if (!products || !Array.isArray(products)) {
-        throw new CustomError("Must Supply Products", 1);
+        throw errorGenerator.generate("Must Supply Products", 1);
     }
     if (!price) {
-        throw new CustomError("Must Supply Price", 2);
+        throw errorGenerator.generate("Must Supply Price", 2);
     }
     if (!signature) {
-        throw new CustomError("Must Supply Signature", 3);
+        throw errorGenerator.generate("Must Supply Signature", 3);
     }
     if (!date) {
-        throw new CustomError("Must Supply Date", 4);
+        throw errorGenerator.generate("Must Supply Date", 4);
     }
 
     const parsedPrice = parseFloat(price);
     if (isNaN(parsedPrice)) {
-        throw new CustomError("Price Must be a number", 5);
+        throw errorGenerator.generate("Price Must be a number", 5);
     }
 
     try {
@@ -86,7 +89,11 @@ async function createOrder(user, products, signature, price, date){
             date
         });
     } catch (error) {
-        throw new CustomError(`Error creating order: ${error.message}`, 9);
+        if(error instanceof CustomError) {
+            throw errorGenerator.generate(`Error creating order: ${error.code}: ${error.message}`, 6);
+        }else {
+            throw errorGenerator.generate(`Error creating order: ${error.message}`, 6);
+        }
     }
 }
 
@@ -98,17 +105,19 @@ async function createOrder(user, products, signature, price, date){
  * @throws {CustomError}
  */
 async function deleteOrder(id){
+    const errorGenerator = new CustomerErrorGenerator("ORD_SRV_DELETE")
+
     if (!id) {
-        throw new CustomError("Must Supply Order ID", 6);
+        throw errorGenerator.generate("Must Supply Order ID", 1);
     }
     let result;
     try {
         result = await OrderModel.findByIdAndDelete(id);
     } catch (error) {
-        throw new CustomError(`Error deleting order: ${error.message}`, 10);
+        throw errorGenerator.generate(`Error deleting order: ${error.message}`, 2);
     }
     if (!result) {
-        throw new CustomError(`Order not found for ID: ${id}`, 7);
+        throw errorGenerator.generate(`Order not found for ID: ${id}`, 3);
     }
     return !!result;
 }

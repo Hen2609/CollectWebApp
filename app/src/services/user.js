@@ -1,6 +1,6 @@
 const UserModel = require("../models/user")
 const crypto = require('crypto')
-const CustomError = require("../utils/customError");
+const {CustomError, CustomerErrorGenerator} = require("../utils/customError");
 /**
  * @fileoverview This file defines the getCategories function.
  * @requires ../models/user
@@ -42,11 +42,13 @@ function hashPassword(password){
  * - user validation fails.
  */
 async function login(id,password){
+    const errorGenerator = new CustomerErrorGenerator("USR_SRV_LOGIN")
+
     if(!id){
-        throw new CustomError("Must supply id", 1)
+        throw errorGenerator.generate("Must supply id", 1)
     }
     if(!password){
-        throw new CustomError("Must supply password", 2)
+        throw errorGenerator.generate("Must supply password", 2)
     }
     const query = {
         id,
@@ -66,17 +68,18 @@ async function login(id,password){
  * - user validation fails.
  */
 async function signUp(id,name, password){
+    const errorGenerator = new CustomerErrorGenerator("USR_SRV_SIGNUP")
     if(!id){
-        throw new CustomError("Must supply id", 1)
+        throw errorGenerator.generate("Must supply id", 1)
     }
     if(!name){
-        throw new CustomError("Must supply name", 2)
+        throw errorGenerator.generate("Must supply name", 2)
     }
     if(!password){
-        throw new CustomError("Must supply password", 3)
+        throw errorGenerator.generate("Must supply password", 3)
     }
     if(await doesUserExist(id)){
-        throw new CustomError("duplicate user", 4)
+        throw errorGenerator.generate("duplicate user", 4)
     }
     const query = {
         id,

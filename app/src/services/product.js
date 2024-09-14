@@ -1,5 +1,5 @@
 const ProductModel = require("../models/product")
-const CustomError = require("../utils/customError");
+const {CustomError, CustomerErrorGenerator} = require("../utils/customError");
 
 /**
  * @fileoverview This file defines the getProducts function.
@@ -32,8 +32,9 @@ async function getProducts(namePattern, categories){
  * @returns {Promise<Product| undefined>}
  */
 async function getProduct(id){
-      if(!id){
-          throw new CustomError("Must Supply Order ID", 6);
+    const errorGenerator = new CustomerErrorGenerator("PRD_SRV_GET")
+    if(!id){
+          throw errorGenerator.generate("Must Supply Product ID", 1);
       }
     const [product] = await Promise.all([ProductModel.findById(id).exec()]);
     return product
@@ -52,7 +53,9 @@ async function getProduct(id){
  * - product validation fails.
  */
 async function createProduct(name, categories, description, price, image){
-    const error = await validateProduct(name, categories, description, price)
+    const errorGenerator = new CustomerErrorGenerator("PRD_SRV_CREATE")
+
+    const error = await validateProduct(errorGenerator, name, categories, description, price, undefined)
     if(error){
         throw error;
     }
@@ -79,10 +82,12 @@ async function createProduct(name, categories, description, price, image){
  * - product validation fails.
  */
 async function updateProduct(id, name, categories, description, price, image){
+    const errorGenerator = new CustomerErrorGenerator("PRD_SRV_UPDATE")
+
     if(!id){
-        throw new CustomError("Must Supply Product ID", 8);
+        throw errorGenerator.generate("Must Supply Product ID", 8);
     }
-    const error = await validateProduct(name, categories, description, price, id)
+    const error = await validateProduct(errorGenerator, name, categories, description, price, id)
     if(error){
         throw error;
     }
@@ -108,8 +113,10 @@ async function updateProduct(id, name, categories, description, price, image){
  * - product id was not defined.
  */
 async function deleteProduct(id){
+    const errorGenerator = new CustomerErrorGenerator("PRD_SRV_DELETE")
+
     if (!id) {
-        throw new CustomError("Must Supply product id", 1)
+        throw errorGenerator.generate("Must Supply product id", 1)
     }
     const result = await ProductModel.findByIdAndDelete(id);
     return !!result
@@ -140,6 +147,7 @@ async function isProductNameAvailable(name, excludeId){
  *
  * @async
  * @function validateProduct
+ * @param {CustomerErrorGenerator} errorGenerator - The name of the product.
  * @param {string} name - The name of the product.
  * @param {import("mongoose").Types.ObjectId[]} categories - The categories the product belongs to.
  * @param {string} description - The description of the product.
@@ -155,26 +163,26 @@ async function isProductNameAvailable(name, excludeId){
  * - price is not a valid number.
  * - product name is not available (duplicate).
  */
-async function validateProduct(name, categories, description, price, id){
+async function validateProduct(errorGenerator, name, categories, description, price, id){
     if(!name){
-        return new CustomError("Must supply name", 1);
+        return errorGenerator.generate("Must supply name", 1);
     }
     if(!categories){
-        return new CustomError("Must supply categories", 2)
+        return errorGenerator.generate("Must supply categories", 2)
     }
     if(!description){
-        return  new CustomError("Must supply description", 3)
+        return  errorGenerator.generate("Must supply description", 3)
     }
     if(!price){
-        return new CustomError("Must supply price", 4)
+        return errorGenerator.generate("Must supply price", 4)
     }
     const parsed_price = parseFloat(req.body.price)
     if(isNaN(parsed_price)){
-        return new CustomError("Price Must be a number", 5);
+        return errorGenerator.generate("Price Must be a number", 5);
     }
     const valid_name = await isProductNameAvailable(name, id)
     if(!valid_name){
-        return new CustomError("Duplicate product name", 7)
+        return errorGenerator.generate("Duplicate product name", 7)
     }
 }
 

@@ -2,7 +2,7 @@
 const {
     signUp, login
 } = require("../../services/user")
-const CustomError = require("../../utils/customError");
+const {CustomError} = require("../../utils/customError");
 
 /**
  * Handles user sign-up by processing incoming request data and generating an appropriate response.

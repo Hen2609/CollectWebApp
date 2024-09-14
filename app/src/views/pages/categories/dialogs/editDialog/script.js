@@ -26,18 +26,19 @@ form.submit(function(e) {
             dialog.close();
         },
         error: function(jqXHR) {
+            console.error(jqXHR.responseJSON);
             const error_code = jqXHR.responseJSON.code
             switch(error_code){
-                case 1:
+                case "CAT_SRV_UPDATE-1":
                     alert('חובה לספק מזהה קטגוריה')
                     break;
-                case 2:
+                case "CAT_SRV_UPDATE-2":
                     alert('חובה לספק שם ')
                     break;
-                case 3:
+                case "CAT_SRV_UPDATE-3":
                     alert('שם תפוס')
                     break;
-                case 4:
+                case "CAT_SRV_UPDATE-4":
                     alert('קטגוריה לא נמצאה')
                     break;
                 default:

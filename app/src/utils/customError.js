@@ -7,4 +7,17 @@ class CustomError extends Error {
     }
 }
 
-module.exports = CustomError;
+
+class CustomerErrorGenerator {
+    constructor(prefix) {
+        this.prefix = prefix;
+    }
+    generate(message, errorCode){
+        return new CustomError(message, this.prefix + "-" + errorCode);
+    }
+}
+
+module.exports = {
+    CustomError,
+    CustomerErrorGenerator
+};

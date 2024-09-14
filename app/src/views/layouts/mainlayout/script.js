@@ -46,18 +46,19 @@ $("#signup-submit-button").on("click", () => {
             window.location.reload()
         },
         error: function(jqXHR) {
+            console.error(jqXHR.responseJSON);
             const error_code = jqXHR.responseJSON.code
             switch(error_code){
-                case 1:
+                case "USR_SRV_SIGNUP-1":
                     alert('חובה לספק מזהה משתמש')
                     break;
-                case 2:
+                case "USR_SRV_SIGNUP-2":
                     alert('חובה לספק שם ')
                     break;
-                case 3:
+                case "USR_SRV_SIGNUP-3":
                     alert('חובה לספק סיסמה')
                     break;
-                case 4:
+                case "USR_SRV_SIGNUP-4":
                     alert('מזהה משתמש תפוס')
                     break;
                 default:
@@ -78,12 +79,13 @@ $("#login-submit-button").on("click", () => {
             window.location.reload();
         },
         error: function(jqXHR) {
+            console.error(jqXHR.responseJSON);
             const error_code = jqXHR.responseJSON.code
             switch(error_code){
-                case 1:
+                case "USR_SRV_LOGIN-1":
                     alert('חובה לספק מזהה משתמש')
                     break;
-                case 2:
+                case "USR_SRV_LOGIN-2":
                     alert('חובה לספק סיסמה')
                     break;
                 default:
@@ -102,6 +104,7 @@ $("#signout-button").on("click", () => {
             window.location.reload();
         },
         error: function(jqXHR) {
+            console.error(jqXHR.responseJSON);
             alert('שגיאה לא ידוע בהרשמה')
         }
     })

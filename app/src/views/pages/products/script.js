@@ -32,7 +32,16 @@ productsTable.on("click", (e) => {
                     row.remove()
                 },
                 error: function(jqXHR) {
-                    alert('שגיאה לא ידועה')
+                    console.error(jqXHR.responseJSON);
+                    const error_code = jqXHR.responseJSON.code
+                    switch (error_code){
+                        case "PRD_SRV_DELETE-1":
+                            alert("חובה לספק מזהה מוצר")
+                            break;
+                        default:
+                            alert('שגיאה לא ידועה')
+                            break;
+                    }
                 }
             });
         }

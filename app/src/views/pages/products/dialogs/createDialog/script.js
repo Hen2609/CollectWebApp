@@ -48,12 +48,13 @@ addCategoryButton.on("click", () => {
                 categoryId = result._id
             },
             error: function(jqXHR) {
+                console.error(jqXHR.responseJSON);
                 const error_code = jqXHR.responseJSON.code
                 switch(error_code){
-                    case 1:
+                    case "CAT_SRV_CREATE-1":
                         alert('חובה לספק שם ')
                         break;
-                    case 2:
+                    case "CAT_SRV_CREATE-2":
                         alert('שם קטגוריה כפול')
                         break;
                     default:
@@ -112,25 +113,26 @@ form.submit(function(e) {
             dialog.close()
         },
         error: function(jqXHR) {
+            console.error(jqXHR.responseJSON);
             const error_code = jqXHR.responseJSON.code
             if(method === "POST"){
                 switch(error_code){
-                    case 1:
+                    case "PRD_SRV_CREATE-1":
                         alert('חובה לספק שם מוצר')
                         break;
-                    case 2:
+                    case "PRD_SRV_CREATE-2":
                         alert('חובה לספק קטגוריות')
                         break;
-                    case 3:
+                    case "PRD_SRV_CREATE-3":
                         alert('חובה לספק תיאור')
                         break;
-                    case 4:
+                    case "PRD_SRV_CREATE-4":
                         alert('חובה לספק מחיר')
                         break;
-                    case 5:
+                    case "PRD_SRV_CREATE-5":
                         alert('מחיר חייב להיות מספר')
                         break;
-                    case 6:
+                    case "PRD_SRV_CREATE-6":
                         alert('שם מוצר כפול')
                         break;
                     default:
@@ -139,25 +141,25 @@ form.submit(function(e) {
                 }
             }else {
                 switch(error_code){
-                    case 1:
+                    case "PRD_SRV_UPDATE-1":
                         alert('חובה לספק מזהה מוצר')
                         break;
-                    case 2:
+                    case "PRD_SRV_UPDATE-2":
                         alert('חובה לספק שם מוצר')
                         break;
-                    case 3:
+                    case "PRD_SRV_UPDATE-3":
                         alert('חובה לספק קטגוריות')
                         break;
-                    case 4:
+                    case "PRD_SRV_UPDATE-4":
                         alert('חובה לספק תיאור')
                         break;
-                    case 5:
+                    case "PRD_SRV_UPDATE-5":
                         alert('חובה לספק מחיר')
                         break;
-                    case 6:
+                    case "PRD_SRV_UPDATE-6":
                         alert('מחיר חייב להיות מספר')
                         break;
-                    case 7:
+                    case "PRD_SRV_UPDATE-7":
                         alert('שם מוצר כפול')
                         break;
                     default:

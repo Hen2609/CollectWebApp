@@ -23,7 +23,16 @@ categoriesTable.on("click", (e) => {
                     row.remove()
                 },
                 error: function(jqXHR) {
-                    alert('שגיאה לא ידוע בהרשמה')
+                    console.error(jqXHR.responseJSON);
+                    const error_code = jqXHR.responseJSON.code
+                    switch (error_code){
+                        case "CAT_SRV_DELETE-1":
+                            alert("חובה לספק מזהה קטגוריה")
+                            break;
+                        default:
+                            alert('שגיאה לא ידועה במחיקת קטגוריה')
+                            break;
+                    }
                 }
             });
         }
