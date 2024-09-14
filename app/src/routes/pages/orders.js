@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {render} = require("../../util/render")
+const {render} = require("../../utils/render")
 const orderController = require("../../controllers/order")
 
 router.get("/", async (req,res) => {

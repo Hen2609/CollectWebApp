@@ -1,6 +1,6 @@
 const express = require('express');
 const { ObjectId } = require('mongodb');
-const {renderComponent} = require("../../util/render")
+const {renderComponent} = require("../../utils/render")
 const router = express.Router();
 const {
     isProductNameAvailable,

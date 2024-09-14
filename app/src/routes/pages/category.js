@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const {render} = require("../../util/render")
+const {render} = require("../../utils/render")
 const categoryController = require("../../controllers/category")
-const { isAdminUser } = require("../../util/auth")
+const { isAdminUser } = require("../../utils/auth")
 
 router.get("/", async (req,res) => {
     if(!isAdminUser(req)){

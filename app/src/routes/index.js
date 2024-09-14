@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const mongo = require("../util/mongo")
+const mongo = require("../utils/mongo")
 
 const api = require("./api")
 const pages = require("./pages")
