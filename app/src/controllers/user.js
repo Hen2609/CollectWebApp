@@ -1,72 +1,80 @@
-const UserModel = require("../models/user")
-const crypto = require('crypto')
-/**
- * @fileoverview This file defines the getCategories function.
- * @requires ../models/user
- * @typedef {import('../models/user').User} User
- */
+
+const {
+    signUp, login
+} = require("../services/user")
+const CustomError = require("../utils/customError");
 
 /**
+ * Handles user sign-up by processing incoming request data and generating an appropriate response.
  * @async
- * @function doesUserExist
- * @param {String} name
- * @returns {Promise<Boolean>}
+ * @function handleSignUp
+ * @param {import("express").Request} req - The request object, containing the body data.
+ * @param {import("express-session").Session & Partial<import("express-session").SessionData>} req.session - The session object, used to handle user sessions.
+ * @param {import("express").Response} res - The response object, used to send the response.
+ * @return {Promise<void>} - A promise that resolves when the sign-up process is complete.
  */
-async function doesUserExist(name){
-    const query = {
-        name
+async function handleSignUp(req, res){
+    let user;
+    try {
+        user = await signUp(req.body.id, req.body.name,  req.body.password)
+    }catch (error){
+        if(error instanceof CustomError){
+            res.status(400).json({error: error.message, code: error.code})
+        }
+        res.status(500).json({error: error.message})
     }
-    const user = await UserModel.findOne(query) 
-    return user ? true : false
+    if(user){
+        req.session.user = user
+        res.status(201).json(user)
+    }else  {
+        res.status(500).json({error: "failed to signup", code: 5})
+    }
 }
 
 /**
- * @function hasPassword
- * @param {String} password
- * @returns {String}
+ * Handles the login process for the user.
+ * @async
+ * @function handeLogin
+ * @param {import("express").Request} req - The request object, containing the body data.
+ * @param {import("express-session").Session & Partial<import("express-session").SessionData>} req.session - The session object, used to handle user sessions.
+ * @param {import("express").Response} res - The response object, used to send the response.
+ * @return {Promise<void>} - A promise that resolves when the login process is completed.
  */
-function hashPassword(password){
-    const hash = crypto.createHash('sha256');
-    hash.update(password);
-    return hash.digest('hex');
+async function handleLogin(req, res){
+    let user;
+    try {
+        user = await login(req.body.id, req.body.password)
+    }catch (error){
+        if(error instanceof CustomError){
+            res.status(400).json({error: error.message, code: error.code})
+        }
+        res.status(500).json({error: error.message})
+    }
+    if(user){
+        req.session.user = user
+        res.status(200).json(user)
+    }else  {
+        res.status(500).json({error: "failed to login", code: 3})
+    }
 }
 
 /**
+ * Handles user logout by invalidating the session or token
+ * and sending an appropriate response.
  * @async
- * @function login
- * @param {String} name
- * @param {String} password
- * @returns {Promise<User>}
+ * @function handleLogout
+ * @param {import("express").Request} req - The request object, containing the body data.
+ * @param {import("express-session").Session & Partial<import("express-session").SessionData>} req.session - The session object, used to handle user sessions.
+ * @param {import("express").Response} res - The response object, used to send the response.
+ * @return {Promise<void>} A promise that resolves when the logout process completes.
  */
-async function login(id,password){
-    const query = {
-        id,
-        password: hashPassword(password)
-    }
-    const user = await UserModel.findOne(query) 
-    return user 
-}
-
-/**
- * @async
- * @function signUp
- * @param {String} id
- * @param {String} name
- * @param {String} password
- * @returns {Promise<User>}
- */
-async function signUp(id,name, password){
-    const query = {
-        id,
-        name,
-        password: hashPassword(password)
-    }
-    const user = await UserModel.create(query) 
-    return user
+async function handleLogout(req, res){
+    req.session.destroy()
+    res.status(200).json({})
 }
 
 module.exports = {
-    doesUserExist,
-    login,
-    signUp
+    handleSignUp,
+    handleLogin,
+    handleLogout
 }

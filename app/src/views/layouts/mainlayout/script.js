@@ -97,7 +97,7 @@ $("#login-submit-button").on("click", () => {
 $("#signout-button").on("click", () => {
     $.ajax({
         method: "POST",
-        url: "/api/user/signout",
+        url: "/api/user/logout",
         success: function() {
             window.location.reload();
         },
