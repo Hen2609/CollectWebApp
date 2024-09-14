@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {render} = require("../../utils/render")
-const orderController = require("../../controllers/order")
+const orderController = require("../../controllers/api/order")
 const { isAdminUser } = require("../../utils/auth")
 
 router.get("/", async (req,res) => {

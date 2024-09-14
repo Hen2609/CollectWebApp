@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const { getProducts, getProduct, createProduct, updateProduct, deleteProduct } = require('../services/product');
-const CustomError = require('../utils/customError');
-const {renderComponent} = require("../utils/render");
+const { getProducts, getProduct, createProduct, updateProduct, deleteProduct } = require('../../services/product');
+const CustomError = require('../../utils/customError');
+const {renderComponent} = require("../../utils/render");
 
 /**
  * Get all products

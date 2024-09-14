@@ -1,5 +1,4 @@
 const ProductModel = require("../models/product")
-const mongoose = require("mongoose");
 const CustomError = require("../utils/customError");
 
 /**
@@ -12,7 +11,7 @@ const CustomError = require("../utils/customError");
  * @async
  * @function getProducts
  * @param {String | undefined} namePattern
- * @param { mongoose.Types.ObjectId[] | undefined } categories
+ * @param {import("mongoose").Types.ObjectId[] | undefiend} categories
  * @returns {Promise<Product[]>}
  */
 async function getProducts(namePattern, categories){
@@ -44,7 +43,7 @@ async function getProduct(id){
  * @async
  * @function createProduct
  * @param {string} name
- * @param {mongoose.Types.ObjectId[]} categories
+ * @param {import("mongoose").Types.ObjectId[]} categories
  * @param {string} description
  * @param {string} price
  * @param {string | undefined } image
@@ -71,7 +70,7 @@ async function createProduct(name, categories, description, price, image){
  * @function updateProduct
  * @param {String} id
  * @param {string} name
- * @param {mongoose.Types.ObjectId[]} categories
+ * @param {import("mongoose").Types.ObjectId[]} categories
  * @param {string} description
  * @param {string} price
  * @param {string | undefined } image
@@ -142,7 +141,7 @@ async function isProductNameAvailable(name, excludeId){
  * @async
  * @function validateProduct
  * @param {string} name - The name of the product.
- * @param {mongoose.Types.ObjectId[]} categories - The categories the product belongs to.
+ * @param {import("mongoose").Types.ObjectId[]} categories - The categories the product belongs to.
  * @param {string} description - The description of the product.
  * @param {string} price - The price of the product.
  * @param {String | undefined } id - The price of the product.

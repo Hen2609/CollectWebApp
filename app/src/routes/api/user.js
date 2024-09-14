@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const {
     handleLogout, handleSignUp, handleLogin
-} = require('../../controllers/user');
+} = require('../../controllers/api/user');
 
 router.post("/logout", handleLogout)
 

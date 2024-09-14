@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {render} = require("../../utils/render")
-const categoryController = require("../../controllers/category")
+const categoryController = require("../../controllers/api/category")
 const { isAdminUser } = require("../../utils/auth")
 
 router.get("/", async (req,res) => {

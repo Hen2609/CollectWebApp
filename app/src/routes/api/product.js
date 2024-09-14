@@ -7,7 +7,7 @@ const {
     handleUpdateProduct,
     handleDeleteProduct,
     handleProductCard,
-} = require('../../controllers/product');
+} = require('../../controllers/api/product');
 
 router.get('/all', handleGetProducts);
 router.get('/:id', handleGetProduct);

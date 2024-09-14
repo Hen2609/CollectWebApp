@@ -1,5 +1,5 @@
-const categoryService = require('../services/category');
-const CustomError = require('../utils/CustomError');
+const categoryService = require('../../services/category');
+const CustomError = require('../../utils/customError');
 
 /**
  * Handles the request to retrieve all categories.

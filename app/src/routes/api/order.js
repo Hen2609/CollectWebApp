@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {handleCreateOrder} = require("../../controllers/order")
+const {handleCreateOrder} = require("../../controllers/api/order")
 
 router.post("/", handleCreateOrder)
 

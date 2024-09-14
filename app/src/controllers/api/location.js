@@ -1,6 +1,6 @@
 const {
     getLocations
-} = require('../services/location');
+} = require('../../services/location');
 
 /**
  * @param {import('express').Request} req

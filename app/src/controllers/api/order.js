@@ -1,5 +1,5 @@
-const orderService = require('../services/order');
-const CustomError = require('../utils/CustomError');
+const orderService = require('../../services/order');
+const CustomError = require('../../utils/customError');
 const mongoose = require("mongoose");
 
 /**

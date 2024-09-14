@@ -1,10 +1,7 @@
 const express = require('express');
-const mongoose = require("mongoose")
 const router = express.Router();
-const { render } = require('../../utils/render');
 
-const categoriesController = require("../../controllers/category")
-const productsController = require("../../controllers/product")
+const {handleHomepage} = require("../../controllers/pages/homepage");
 
 const categoryRoutes = require("./category")
 const productRoutes = require("./product");
