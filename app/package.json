@@ -14,6 +14,11 @@
     "ejs": "^3.1.10",
     "express": "^4.19.2",
     "express-mongo-sanitize": "^2.2.0",
+    "express-session": "^1.18.0",
+    "form-data": "^4.0.0",
+    "mailgun-js": "^0.22.0",
+    "mailgun.js": "^10.2.3",
+    "mongoose": "^8.6.2",
     "twitter-api-v2": "^1.17.2"
   }
 }
