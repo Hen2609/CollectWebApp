@@ -1,15 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const {render} = require("../../utils/render")
-const categoryController = require("../../controllers/api/category")
-const { isAdminUser } = require("../../utils/auth")
+const {handleCategoryPage} = require("../../controllers/pages/category");
 
-router.get("/", async (req,res) => {
-    if(!isAdminUser(req)){
-        return res.redirect('/')
-    }    
-    const categories = await categoryController.getCategories()
-    render(req,res,'categories', 'קטגוריות', {categories})
-})
+router.get("/", handleCategoryPage)
 
 module.exports = router;
