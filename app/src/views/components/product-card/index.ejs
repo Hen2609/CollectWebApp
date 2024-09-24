@@ -1,12 +1,26 @@
 <article class="product-card" data-product-id="<%- product._id %>">
-    <h1><%= product.name %></h1>
     <% if(product.image) {%>
         <img src="<%- product.image %>" alt="<%= product.name %>" width="250"/>
+    <% } else { %>
+        <div class="image-placeholder">אין תמונה זמינה</div>
     <% } %>
-    <p><%= product.description %></p>
-    <data value="<%= product.price %>" aria-label="מחיר"><%- utils.formatters.currency(product.price) %></strong>
+    <h1><%= product.name %></h1>
+    <% if(product.description) {%>
+        <p class="description"><%= product.description %></p>
+    <% } else { %>
+        <p class="no-description">אין תיאור זמין</p>
+    <% } %>
+    <data class="price" value="<%= product.price %>" aria-label="מחיר"><%- utils.formatters.currency(product.price) %></data>
     <div class="add-to-cart">
-        <input type="number" min="0" name="ammount" aria-label="כמות" value="1"/>
+        <div class="quantity-control">
+            <button type="button" disabled="" class="decrease-button" aria-controls="p-quantity" aria-label="הקטנת כמות">
+                -
+            </button>
+            <input aria-label="כמות" id="p-quantity" value="1" type="number" class="product-quantity" min="0" max="10">
+            <button type="button" class="increase-button" aria-controls="p-quantity" aria-label="הגדלת כמות">
+                +
+            </button>
+        </div>
         <button class="add-to-cart-button">
             <%= addButtonText %>
         </button>

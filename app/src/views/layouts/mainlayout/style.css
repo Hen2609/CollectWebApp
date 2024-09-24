@@ -1,9 +1,14 @@
 :root {
     --sideBarWidth: 10rem;
     --footer-height: 120px;
+    --primary-blue: #1e88e5;
+    --dark-blue: #1565c0;
+    --light-blue: #bbdefb;
+    --text-on-blue: #ffffff;
 }
 body {
     margin: 0;
+    background-color: #f0f8ff;
 }
 .navbar {
     display: grid;
