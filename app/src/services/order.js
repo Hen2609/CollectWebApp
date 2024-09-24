@@ -1,5 +1,5 @@
 const OrderModel = require("../models/order");
-const {CustomError, CustomerErrorGenerator} = require("../utils/customError");
+const { CustomError, CustomerErrorGenerator} = require("../utils/customError");
 
 /**
  * @fileoverview This file defines the getOrders function.
