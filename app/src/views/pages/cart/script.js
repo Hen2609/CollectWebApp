@@ -27,45 +27,33 @@ async function initPage(){
     const cards = await Promise.all(product_cards)
     const cartItems = $("#cart-items")
     cartItems.html(cards.join(' '))
-    calculateCartPrice()
-    toggleConfirm();
-    $(".add-to-cart-button").on('click', (e) => {
-        const productCard = e.target.closest(".product-card");
-        const ammount = productCard.querySelector('input[type="number"]').value
-        const cart = JSON.parse(localStorage.getItem('cart')) ?? {}
-        if(!cart[productCard.dataset.productId ]){
-            cart[productCard.dataset.productId ] = 0
-        }
-        cart[productCard.dataset.productId ] = parseFloat(ammount)
-        if(cart[productCard.dataset.productId] <= 0){
-            delete cart[productCard.dataset.productId];
-            productCard.remove()
-        }
-        localStorage.setItem('cart',JSON.stringify(cart))
-        const event = new CustomEvent("cartChanged")
-        document.dispatchEvent(event)
-        calculateCartPrice() 
-    })
+    cartChanged()
 }
+document.addEventListener("cartChanged", () => {
+    cartChanged()
+});
+function cartChanged(){
+    const sum = calculateCartPrice()
+    toggleConfirm(sum > 0)
+}
+
 function calculateCartPrice(){
     let sum = 0;
     $('.product-card').each(function() {
         const value = parseFloat($(this).find('data[aria-label="מחיר"]').val())
-        const ammount = parseFloat($(this).find('input').val())
-        if(!isNaN(value) && !isNaN(ammount)){
-            sum += value * ammount
+        const amount = parseFloat($(this).find('input').val())
+        if(isNaN(amount) || amount === 0){
+            $(this).remove()
+        }else if(!isNaN(value)){
+            sum += value * amount
         }
     })
     const cartPrice = $("#cart-pice")
     cartPrice.attr('value',sum)
     cartPrice.html(window.formatters.currency(sum))
     $('input[name="price"]').val(sum)
+    return sum
 }
-
-window.addEventListener('DOMContentLoaded', () => {
-    initPage()
-})
-
 
 const canvas = $('#signature-pad')[0];
 const context = canvas.getContext('2d')

@@ -11,16 +11,11 @@
             <input type="checkbox" id="<%- cat._id %>" name="categories" value="<%-cat._id %>"/>
         <% }) %>
     </form>
-    <div class="products">
-        <% products.forEach(product => { %>
-            <%- include("../../components/product-card/index.ejs", {product, utils, addButtonText: "הוסף לעגלה"}) %>
-        <% }) %>
-    </div>
+    <%- include("../../components/products-area/index.ejs", {products, utils}) %>
 </div>
 <script type="module">
     <%- include("./script.js") %>
 </script>
 <style>
     <%- include('./style.css') %>
-    <%- include('../../components/product-card/style.css') %>
 </style>

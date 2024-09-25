@@ -3,22 +3,30 @@
     <input type="hidden" name="date" value="<%- new Date().toISOString() %>"/>
     <input type="hidden" name="signature"/>
     <input type="hidden" name="price"/>
+    <h1>העגלה שלך</h1>
+    <div class="cart-title">
+        <p>סה"כ:<data id="cart-pice" aria-label="מחיר" value=""></data></p>
+        <button id="cart-approve-order-button" type="submit">
+            אשר הזמנה
+        </button>
+    </div>
     <div class="signature-pad-wrap">
         <canvas height="100" width="300" id="signature-pad"></canvas>
         <button type="button" id="clear-pad">נקה חתימנה</button>
     </div>
-    <data id="cart-pice" aria-label="מחיר" value="">
-    </data>
-    <button id="cart-approve-order-button" type="submit">
-        אשר הזמנה
-    </button>
-</form> 
-<div id="cart-items">
+</form>
+<div id="cart-items" class="products-area">
     <h2>העגלה ריקה</h2>
 </div>
 <script type="module">
     <%- include("./script.js") %>
+    <%- include("../../../views/components/products-area/script.js") %>
+    window.addEventListener('DOMContentLoaded', async () => {
+        await initPage()
+        initProductsArea()
+    })
 </script>
 <style>
+    <%- include("../../../views/components/products-area/style.css") %>
     <%- include("./style.css") %>
 </style>

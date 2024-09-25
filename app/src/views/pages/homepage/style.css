@@ -17,10 +17,4 @@
             justify-self: center;
         }
     }
-    .products {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, 250px);
-        grid-auto-rows: min-content;
-        gap: 10px;
-    }
 }

@@ -1,0 +1,11 @@
+<div class="products-area">
+    <% products.forEach(product => { %>
+        <%- include("../product-card/index.ejs", {product, utils})%>
+    <% }) %>
+</div>
+<script type="module">
+    <%- include("./script.js") %>
+</script>
+<style>
+    <%- include('./style.css') %>
+</style>

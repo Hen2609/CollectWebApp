@@ -1,8 +1,51 @@
 
-#signature-pad {
-    --primary-color: black;
-    
-    cursor: url(pen.png) 1 26, pointer;
-    border: 2px solid var(--primary-color);
+.signature-pad-wrap {
+    display: grid;
+    grid-template-columns: auto;
+    width: fit-content;
+    gap: 5px;
+
+    #signature-pad {
+        --primary-color: black;
+
+        cursor: pointer;
+        border: 2px solid var(--primary-color);
+        border-radius: 4px;
+    }
+
+    #clear-pad{
+        width: fit-content;
+        color: var(--primary-blue);
+        border: 1px solid var(--primary-blue);
+        background-color: transparent;
+        padding: 8px 12px;
+        text-align: center;
+        text-decoration: none;
+        display: flex;
+        font-size: calc(0.65* var(--article-title-font-size));
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+}
+
+.cart-title {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+#cart-approve-order-button{
+    background-color: var(--primary-blue);
+    color: var(--text-on-blue);
+    border: none;
+    padding: 8px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    font-size: calc(0.65* var(--article-title-font-size));
+    cursor: pointer;
     border-radius: 4px;
+    transition: background-color 0.3s;
+    height: fit-content;
 }

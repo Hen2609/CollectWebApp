@@ -13,7 +13,7 @@
     <data class="price" value="<%= product.price %>" aria-label="מחיר"><%- utils.formatters.currency(product.price) %></data>
     <div class="add-to-cart">
         <div class="quantity-control">
-            <button type="button" disabled="" class="decrease-button" aria-controls="p-quantity" aria-label="הקטנת כמות">
+            <button type="button" class="decrease-button" aria-controls="p-quantity" aria-label="הקטנת כמות">
                 -
             </button>
             <input aria-label="כמות" id="p-quantity" value="1" type="number" class="product-quantity" min="0" max="10">
@@ -22,7 +22,10 @@
             </button>
         </div>
         <button class="add-to-cart-button">
-            <%= addButtonText %>
+            כפתור
         </button>
     </div>
 </article>
+<style>
+    <%- include('./style.css') %>
+</style>
