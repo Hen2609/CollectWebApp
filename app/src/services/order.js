@@ -15,13 +15,51 @@ const { CustomError, CustomerErrorGenerator} = require("../utils/customError");
  * @throws {CustomError}
  */
 async function getOrders(users){
-    const query = {}
-    if(users){
-        query.user = {
-            $in: users
+    const match = users && users.length ? {$match: { user: {$in: users} }} : {
+        $match: {}
+    };
+    return OrderModel.aggregate([
+        match,
+        {
+            $lookup: {
+                from: "products",
+                localField: "products.id",
+                foreignField: "_id",
+                as: "productDetails"
+            }
+        },
+        {
+            $addFields: {
+                products: {
+                    $map: {
+                        input: "$products",
+                        as: "orderProducts",
+                        in: {
+                            $mergeObjects: [
+                                "$$orderProducts", {
+                                    $arrayElemAt:[
+                                        {
+                                            $filter: {
+                                                input: "$productDetails",
+                                                as: "productDetail",
+                                                cond: { $eq: ["$$productDetail._id", "$$orderProducts.id"] }
+                                            }
+                                        },
+                                        0
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        {
+            $project: {
+                productDetails: 0
+            }
         }
-    }
-    return OrderModel.find(query);
+    ])
 }
 
 /**

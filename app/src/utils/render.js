@@ -1,5 +1,5 @@
 const { Request, Response } = require('express');
-const formatters = require(".//formatters")
+const formatters = require("./formatters")
 const utils = {
     formatters
 }

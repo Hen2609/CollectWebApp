@@ -1,0 +1,26 @@
+.orders-table-wrapper {
+    max-height: 70vh;
+    overflow-y: auto;
+    .orders-table {
+        --table-margin-inline: 10rem;
+        width: calc(100% - calc(var(--table-margin-inline)) * 2);
+        border-collapse: collapse;
+        margin-inline: var(--table-margin-inline);
+        .orders-table-head{
+            .orders-table-header-cell{
+                background-color: #3498db;
+                color: white;
+                position: sticky;
+                top: 0;
+            }
+        }
+        .orders-table-cell {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: right;
+            max-width: fit-content;
+        }
+        .orders-table-row {
+        }
+    }
+}

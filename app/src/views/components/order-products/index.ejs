@@ -1,0 +1,20 @@
+<table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+<thead>
+<tr>
+    <th style="border: 1px solid #ddd; padding: 12px; text-align: right; background-color: #3498db; color: white;">שם</th>
+    <th style="border: 1px solid #ddd; padding: 12px; text-align: right; background-color: #3498db; color: white;">תיאור</th>
+    <th style="border: 1px solid #ddd; padding: 12px; text-align: right; background-color: #3498db; color: white;">כמות יחידות</th>
+    <th style="border: 1px solid #ddd; padding: 12px; text-align: right; background-color: #3498db; color: white;">מחיר ליחידה</th>
+</tr>
+</thead>
+<tbody>
+<% products.forEach(product => { %>
+    <tr>
+        <td style="border: 1px solid #ddd; padding: 12px; text-align: right;"><%= product.name %></td>
+        <td style="border: 1px solid #ddd; padding: 12px; text-align: right;"><%= product.description %></td>
+        <td style="border: 1px solid #ddd; padding: 12px; text-align: right;"><%= product.quantity %></td>
+        <td style="border: 1px solid #ddd; padding: 12px; text-align: right;"><%= utils.formatters.currency(product.price) %></td>
+    </tr>
+<% }) %>
+</tbody>
+</table>

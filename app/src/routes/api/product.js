@@ -8,12 +8,14 @@ const {
     handleDeleteProduct,
     handleProductCard,
 } = require('../../controllers/api/product');
+const {userAdminGuard, userAuthenticatedGuard} = require("../../utils/auth")
+
 
 router.get('/all', handleGetProducts);
 router.get('/:id', handleGetProduct);
-router.post('/', handleCreateProduct);
-router.put('/', handleUpdateProduct);
-router.delete('/:id', handleDeleteProduct);
+router.post('/', userAdminGuard, handleCreateProduct);
+router.put('/', userAdminGuard, handleUpdateProduct);
+router.delete('/:id', userAdminGuard, handleDeleteProduct);
 
 router.get('/card/:id', handleProductCard)
 

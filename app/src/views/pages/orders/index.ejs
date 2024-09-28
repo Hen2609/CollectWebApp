@@ -3,24 +3,36 @@
 <% } else { %>
     <h1>הזמנות שלי</h1>
 <% } %>
-<table>
-    <thead>
-        <tr>
-            <th>משתמש</th>
-            <th>תאריך</th>
-            <th>סכום</th>
-            <th>חתימה</th>
-        </tr>
-    </thead>
-    <tbody>
-        <% orders.forEach(order => { %>
-            <tr>
-                <td><%= order.user %></td>
-                <% const date = new Date(order.date).toLocaleDateString('he-IL'); %>
-                <td><%= date %></td>
-                <td><%= order.price %></td>
-                <td><img src="<%- order.signature %>" width="160"/></td>
+<div class="orders-table-wrapper">
+    <table class="orders-table">
+        <thead>
+            <tr class="orders-table-head">
+                <th class="orders-table-header-cell orders-table-cell">משתמש</th>
+                <th class="orders-table-header-cell orders-table-cell">תאריך</th>
+                <th class="orders-table-header-cell orders-table-cell">פריטים</th>
+                <th class="orders-table-header-cell orders-table-cell">סכום</th>
+                <th class="orders-table-header-cell orders-table-cell">חתימה</th>
             </tr>
-        <% }) %>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            <% orders.forEach(order => { %>
+                <tr class="orders-table-row">
+                    <td class="orders-table-cell"><%= order.user ? order.user : "רכישה אנונימית" %></td>
+                    <% const date = new Date(order.date).toLocaleDateString('he-IL'); %>
+                    <td class="orders-table-cell" ><%= date %></td>
+                    <td class="orders-table-cell">
+                        <details>
+                            <summary><%= order.products.length %> פריטים </summary>
+                            <%- include("../../components/order-products/index.ejs",{products: order.products, utils}) %>
+                        </details>
+                    </td>
+                    <td class="orders-table-cell"><%= utils.formatters.currency(order.price) %></td>
+                    <td class="orders-table-cell"><img alt="חתימה" src="<%- order.signature %>" width="160"/></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>
+<style>
+    <%- include('./style.css') %>
+</style>
