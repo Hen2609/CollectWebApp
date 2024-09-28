@@ -1,8 +1,8 @@
 <% if(user && user.name){ %>
     <span class="user-name">שלום <%= user.name %>!</span>
-    <button id="signout-button">התנתק</button>
+    <button id="signout-button" class="navbar-button primary-button">התנתק</button>
 <% } else{ %>  
-    <button id="signup-button" popovertarget="signup-popover" >
+    <button id="signup-button" popovertarget="signup-popover" class="navbar-button primary-button">
         <span>
             הירשם
         </span>
@@ -12,10 +12,10 @@
             <input type="text" name="id" placeholder="שם משתמש"/>
             <input type="text" name="name" placeholder="שם מלא"/>
             <input type="password" name="password" placeholder="שוםמשום היפתח"/>
-            <button type="button" id="signup-submit-button">הירשם</button>
+            <button type="button" id="signup-submit-button" class="primary-button">הירשם</button>
         </form>
     </div>
-    <button id="login-button" popovertarget="login-popover" >
+    <button id="login-button" popovertarget="login-popover" class="navbar-button primary-button">
         <span>
             התחבר
         </span>
@@ -24,7 +24,7 @@
         <form id="login-form">
             <input type="text" name="id" placeholder="שם משתמש"/>
             <input type="password" name="password" placeholder="שוםמשום היפתח"/>
-            <button type="button" id="login-submit-button">התחבר</button>
+            <button type="button" id="login-submit-button" class="primary-button">התחבר</button>
         </form>
     </div>
 <% } %>

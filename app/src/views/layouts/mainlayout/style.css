@@ -9,6 +9,7 @@
 body {
     margin: 0;
     background-color: #f0f8ff;
+    font-family: "Heebo", sans-serif;
 }
 .navbar {
     display: grid;
@@ -18,14 +19,6 @@ body {
     background-color: cornflowerblue;
     /* max-height: 4rem; */
     min-height: fit-content;
-    button {
-        background-color: transparent;
-        border: none;
-        span {
-            display: flex;
-            align-items: center;
-        }
-    }
     .navbar-title {
         font-size: 2rem;
         margin: 0;
@@ -33,6 +26,14 @@ body {
         a {
             color: black;
             text-decoration: none;
+        }
+    }
+    .navbar-button {
+        background-color: transparent;
+        border: none;
+        span {
+            display: flex;
+            align-items: center;
         }
     }
     .navbar-edge {
@@ -49,6 +50,11 @@ body {
             inset-block-start: anchor(--login_anchor bottom);
             inset-inline-start: anchor(--login_anchor right);
             margin-block-start: 10px;
+            margin-inline-end: 2px;
+            input {
+                margin-block: 5px;
+            }
+            background-color: rgba(140,187,217,0.57);
         }
         #cart {
             position: relative;
@@ -102,13 +108,21 @@ body {
     }
     #close-sidbar {
         position: absolute;
-        left: 0;
+        left: 1px;
+        top: 1px;
         background-color: transparent;
         border: none;
         font-size: 1rem;
+        border-radius: 50%;
+        aspect-ratio: 1;
+        transition: background-color 0.3s;
+        cursor: pointer;
         span {
             display: flex;
             align-items: center;
+        }
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.1);
         }
     }
 }
@@ -133,4 +147,19 @@ footer {
         width: 300px;
       }
       
+}
+.primary-button {
+    background-color: var(--primary-blue);
+    color: var(--text-on-blue);
+    border: none;
+    padding: 8px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    &:hover {
+        background-color: var(--dark-blue);
+    }
 }

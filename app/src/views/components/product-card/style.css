@@ -10,7 +10,7 @@
     &:hover {
         box-shadow: 0 4px 8px rgba(30, 136, 229, 0.3);
     }
-    --article-title-font-size: 2rem;
+    --article-title-font-size: 1.5rem;
     h1 {
         font-size: var(--article-title-font-size);
         color: var(--primary-blue);
@@ -112,21 +112,8 @@
                 }
             }
         }
-        .add-to-cart-button {
-            background-color: var(--primary-blue);
-            color: var(--text-on-blue);
-            border: none;
-            padding: 8px 12px;
-            text-align: center;
-            text-decoration: none;
-            display: flex;
+        .primary-button.add-to-cart-button {
             font-size: calc(0.65 * var(--article-title-font-size));
-            cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-            &:hover {
-                background-color: var(--dark-blue);
-            }
         }
     }
 }
