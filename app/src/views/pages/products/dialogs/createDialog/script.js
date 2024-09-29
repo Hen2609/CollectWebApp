@@ -96,7 +96,6 @@ form.submit(function(e) {
             newRow.find("td").eq(1).text(data.name);
             const categories = data.categories.map(cat => {
                 return categoriesOptions.find('option').filter((_,option) => {
-                    console.log(option.dataset.id, cat)
                     return option.dataset.id === cat
                 })?.[0]?.value
             })
@@ -109,7 +108,6 @@ form.submit(function(e) {
             }else {
                 newRow.find("td").eq(5).html('')
             }
-            console.log(existingRow?.length)
             if(existingRow?.length <= 0){
                 productsTable.append(newRow)
             }

@@ -6,13 +6,11 @@ function initProductsArea(domInit){
         const productId = productCard.dataset.productId
         const cart = JSON.parse(localStorage.getItem('cart')) ?? {}
         const productsInCart = parseFloat(amount)
-        console.log(productsInCart)
         if(isNaN(productsInCart) || productsInCart <= 0){
             delete cart[productId]
         }else {
             cart[productId] = productsInCart
         }
-        console.log('cart',cart)
         localStorage.setItem('cart',JSON.stringify(cart))
         const event = new CustomEvent("cartChanged")
         document.dispatchEvent(event)

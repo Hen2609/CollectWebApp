@@ -16,7 +16,6 @@ async function handleStatsPage(req, res){
     }
     const usersOrders   = await ordersByUsers()
     const bestSelling   =  await getBestSellingCategories()
-    console.log('bes',bestSelling)
     render(req,res,'stats', 'סטטיסטיקה', {bestSelling, usersOrders})
 }
 
