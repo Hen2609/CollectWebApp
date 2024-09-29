@@ -225,7 +225,6 @@ async function  ordersByUsers(){
     ]);
 }
 
-
 /**
  * @async
  * @function getProductsOfOrder
@@ -252,6 +251,73 @@ async function getProductsOfOrder(order_id){
     return res?.[0]?.order_products ?? []
 }
 
+function getBestSellingCategories(){
+    return OrderModel.aggregate([
+        {$unwind: "$products"},
+        {
+            $group: {
+                _id: "$products.id",
+                totalSold: {$sum:  {$toInt: "$products.quantity" }},
+            }
+        },
+        {
+            $project: {
+                _id: 1,
+                totalSold: 1 // Project totalSold to check its value
+            }
+        },
+        {
+            $lookup: {
+                from: "products",
+                localField: "_id",
+                foreignField: "_id",
+                as: "productDetails"
+            }
+        },
+        { $unwind: "$productDetails" },
+        {
+            $addFields: {
+                "productDetails.totalSold": "$totalSold"
+            }
+        },
+        { $unwind: "$productDetails.categories" },
+        {
+            $group: {
+                _id: "$productDetails.categories",
+                totalSold: { $sum: "$productDetails.totalSold" } // Correctly sum totalSold by category
+            }
+        },
+        {
+            $lookup: {
+                from: "categories",
+                localField: "_id",
+                foreignField: "_id",
+                as: "categoryDetails"
+            }
+        },
+        { $unwind: "$categoryDetails" },
+        {
+            $addFields: {
+                "categoryDetails.totalSold": "$totalSold"
+            }
+        },
+        {
+            $group: {
+                "_id": "$categoryDetails._id",
+                totalSold: { $sum: "$categoryDetails.totalSold" },
+                categoryDetail: { $first: "$categoryDetails" }
+            }
+        },{
+            $project: {
+                _id: "$categoryDetail._id",
+                name: "$categoryDetail.name",
+                totalSold: "$totalSold"
+
+            }
+        }
+    ]);
+}
+
 module.exports = {
     getOrders,
     getOrder,
@@ -259,5 +325,6 @@ module.exports = {
     deleteOrder,
     ordersByProducts,
     ordersByUsers,
-    getProductsOfOrder
+    getProductsOfOrder,
+    getBestSellingCategories
 };

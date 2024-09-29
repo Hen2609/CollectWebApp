@@ -19,7 +19,9 @@ async function handleHomepage(req, res){
     }
     categories_filter = categories_filter.map(cat => mongoose.Types.ObjectId.createFromHexString(cat))
     const search = req.query.search ? req.query.search : undefined
-    const products = await getProducts(search,categories_filter)
+    const maxPrice = req.query['max-price']
+    const parsedMax = typeof maxPrice === "string" ? parseFloat(maxPrice) : undefined
+    const products = await getProducts(search,categories_filter,parsedMax)
 
     render(req,res,'homepage','קודש SQUAD', {
         categories,

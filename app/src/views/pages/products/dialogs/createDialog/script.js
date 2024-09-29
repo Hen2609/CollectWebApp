@@ -91,12 +91,12 @@ form.submit(function(e) {
         data: form.serialize(),
         success: function(data)
         {
-            const row = productsTable.find("tr").eq(0);
-            const newRow = row.clone()
-            newRow.attr("data-product-id", data._id);
-            newRow.find("td").eq(1).text(data.name); 
+            const existingRow = productsTable.find('tr[data-product-id="' + data.id + '"]').eq(0);            const row = productsTable.find("tr").eq(0);
+            const newRow = existingRow?.length > 0  ? existingRow : row.clone()
+            newRow.find("td").eq(1).text(data.name);
             const categories = data.categories.map(cat => {
                 return categoriesOptions.find('option').filter((_,option) => {
+                    console.log(option.dataset.id, cat)
                     return option.dataset.id === cat
                 })?.[0]?.value
             })
@@ -109,7 +109,10 @@ form.submit(function(e) {
             }else {
                 newRow.find("td").eq(5).html('')
             }
-            productsTable.append(newRow)
+            console.log(existingRow?.length)
+            if(existingRow?.length <= 0){
+                productsTable.append(newRow)
+            }
             dialog.close()
         },
         error: function(jqXHR) {

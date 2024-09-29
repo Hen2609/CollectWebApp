@@ -12,12 +12,26 @@
         user-select: none;
         border-inline-end: 1px solid black;
         margin-inline-end: 5px;
+        .category-title {
+            grid-column: 1/3;
+            margin-block: 0;
+            font-size: 1.2rem;
+        }
         label, input {
             cursor: pointer;
         }
-        #free-search {
-            justify-self: center;
-            cursor: default;
+        #max-price {
+            grid-column: 1/3;
         }
+        .free-search-area {
+            display: flex;
+            align-items: center;
+            grid-column: span 2;
+            #free-search {
+                justify-self: center;
+                cursor: default;
+            }
+        }
+
     }
 }

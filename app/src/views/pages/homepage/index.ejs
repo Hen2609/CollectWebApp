@@ -1,11 +1,16 @@
 <div class="homepage">
     <form class="filters">
-        <input type="text" id="free-search" placeholder="חיפוש חופשי" aria-label="חיפוש חופשי" name="search"/>
-        <button type="submit" id="filter-button" aria-label="סנן" class="icon-button">
-            <span>
-                <%- include("../../components/icon/index.ejs", {icon: 'filter_alt'}) %>
-            </span>
-        </button>
+        <div class="free-search-area">
+            <input type="text" id="free-search" placeholder="חיפוש חופשי" aria-label="חיפוש חופשי" name="search"/>
+            <button type="submit" id="filter-button" aria-label="סנן" class="icon-button">
+                <span>
+                    <%- include("../../components/icon/index.ejs", {icon: 'filter_alt'}) %>
+                </span>
+            </button>
+        </div>
+        <label for="max-price" >מחיר מקסימלי</label>
+        <input id="max-price" type="number" name="max-price" min="0">
+        <h2 class="category-title">קטגוריות</h2>
         <% categories.forEach(cat => { %>
             <label for="<%-cat._id%>"><%= cat.name %></label>
             <input type="checkbox" id="<%- cat._id %>" name="categories" value="<%-cat._id %>"/>

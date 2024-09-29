@@ -1,78 +1,102 @@
-<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3.v6.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-<h1>סטטיסטיקה</h1>
-<div style="display: flex;">\
-    <article>
-        <h1>מכירות מוצרים</h1>
+<h1 class="title">סטטיסטיקה</h1>
+<div style="display: flex;">
+    <article class="stat">
+        <h1>קטגוריות פופלריות</h1>
         <div id="products-order-graph"></div>
     </article>
-    <article>
+    <article class="stat">
         <h1>הוצאת כסף של משתמשים</h1>
         <div id="users-order-graph"></div>
     </article>
 </div>
+<script>
+    window.getRandomColor = function() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+</script>
 <script type="module">
-    // set the dimensions and margins of the graph
-    const width = 600
-    const height = 600
-    const margin = 40
-    
-    // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
+    function wrap(text, width) {
+        text.each(function() {
+            const text = d3.select(this);
+            const words = text.text().split(/\s+/).reverse();
+            let word;
+            let line = [];
+            let lineNumber = 0;
+            let tspan = text.text(null).append("tspan").attr("x", 0).attr("dy", "1.2em");
+
+            while (word = words.pop()) {
+                line.push(word);
+                tspan.text(line.join(" "));
+                if (tspan.node().getComputedTextLength() > width) {
+                    line.pop();
+                    tspan.text(line.join(" "));
+                    line = [word];
+                    tspan = text.append("tspan").attr("x", 0).attr("dy", "1.2em").text(word);
+                }
+            }
+        });
+    }
+
+    const serverData = <%- JSON.stringify(bestSelling) %>
+
+    const width = 450;
+    const height = 600;
+    const margin = 40;
+
+    const totalSold = d3.sum(serverData, d => d.totalSold);
     const radius = Math.min(width, height) / 2 - margin
-    
-    // append the svg object to the div called 'my_dataviz'
+
     const svg = d3.select("#products-order-graph")
-      .append("svg")
+        .append("svg")
         .attr("width", width)
         .attr("height", height)
-      .append("g")
-        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+        .append("g")
+        .attr("transform", `translate(${width / 2}, ${height / 3})`);
 
-    const serverData = <%- JSON.stringify(data) %>;
-      
-    const data = Object.values(serverData.productOrders).reduce((res,product) => {
-        res[product.product] = product.totalOrders
-        return res;
-    }, {})
-    
-    // set the color scale
     const color = d3.scaleOrdinal()
-      .domain(data)
-      .range(d3.schemeSet2);
-    
-    // Compute the position of each group on the pie:
+        .range(d3.schemeSet2);
+
     const pie = d3.pie()
-      .value(function(d) {return d.value; })
-    const data_ready = pie(d3.entries(data))
-    // Now I know that group A goes from 0 degrees to x degrees and so on.
-    
-    // shape helper to build arcs:
+        .value(function(d) {return d.totalSold})
+
+    const data_ready = pie(serverData.map(v => ({
+        _id: v._id,
+        name: v.name,
+        totalSold: v.totalSold
+    })));
+
     const arcGenerator = d3.arc()
-      .innerRadius(0)
-      .outerRadius(radius)
-    
-    // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
+        .innerRadius(0)
+        .outerRadius(radius)
+
     svg
-      .selectAll('mySlices')
-      .data(data_ready)
-      .enter()
-      .append('path')
+        .selectAll('mySlices')
+        .data(data_ready)
+        .join('path')
         .attr('d', arcGenerator)
-        .attr('fill', function(d){ return(color(d.data.key)) })
+        .attr('fill', function(d) { return color(d.data._id); })
         .attr("stroke", "black")
         .style("stroke-width", "2px")
         .style("opacity", 0.7)
-    
-    // Now add the annotation. Use the centroid method to get the best coordinates
-    svg
-      .selectAll('mySlices')
-      .data(data_ready)
-      .enter()
-      .append('text')
-      .text(function(d){ return d.data.key})
-      .attr("transform", function(d) { return "translate(" + arcGenerator.centroid(d) + ")";  })
-      .style("text-anchor", "middle")
-      .style("font-size", 17)
+
+
+    const legend = d3.select("#products-order-graph")
+    Object.values(serverData).forEach((data, i) => {
+        const percentage = ((data.totalSold / totalSold) * 100).toFixed(2);
+        const text = `${data.name} ${percentage}% (${data.totalSold} רכישות )`
+        svg.append("circle").attr("cx",200).attr("cy",200 + 30 * i).attr("r", 6).style("fill", color(data._id))
+        svg.append("text").attr("x", 180).attr("y", 200 + 30 * i).text(text).style("font-size", "15px").attr("alignment-baseline","middle")
+    })
+
+
+</script>
 </script>
 <script  type="module">
 // set the dimensions and margins of the graph
@@ -91,17 +115,43 @@ var svg = d3.select("#users-order-graph")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
+var color = d3.scaleOrdinal()
+    .domain(serverData.map(function(d) { return d.userDetails.name; }))
+    .range(d3.schemeSet2);
+
 var x = d3.scaleBand()
     .range([0, width])
     .domain(serverData.map(function(d) { return d.userDetails.name; }))
     .padding(0.2);
 
+function wrap(text, width) {
+    text.each(function() {
+        var text = d3.select(this);
+        var words = text.text().split(/\s+/).reverse();
+        var word;
+        var line = [];
+        var lineNumber = 0;
+        var tspan = text.text(null).append("tspan").attr("x", 0).attr("dy", "1.2em");
+
+        while (word = words.pop()) {
+            line.push(word);
+            tspan.text(line.join(" "));
+            if (tspan.node().getComputedTextLength() > width) {
+                line.pop();
+                tspan.text(line.join(" "));
+                line = [word];
+                tspan = text.append("tspan").attr("x", 0).attr("dy", "1.2em").text(word);
+            }
+        }
+    });
+}
+
 svg.append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x))
     .selectAll("text")
-      .attr("transform", "translate(-10,30)rotate(-45)")
-      .style("text-anchor", "end");
+    .call(wrap, x.bandwidth());
+
 
 var y = d3.scaleLinear()
     .domain([0, d3.max(serverData, function(d) { return d.totalSpent; })])
@@ -117,6 +167,9 @@ svg.selectAll("mybar")
     .attr("y", function(d) { return y(d.totalSpent); })
     .attr("width", x.bandwidth())
     .attr("height", function(d) { return height - y(d.totalSpent); })
-    .attr("fill", "#69b3a2");
+    .attr("fill", function(d) { return color(d.userDetails.name); }); // Use dynamic color based on user name
 
 </script>
+<style>
+    <%- include("./style.css") %>
+</style>

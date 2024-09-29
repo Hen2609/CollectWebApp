@@ -60,6 +60,7 @@ productsTable.on("click", (e) => {
 
 
         createDialog.setAttribute('data-mode','edit')
+        createDialog.querySelector("#submit-button").textContent = 'עדכן מוצר'
         $('#product-dialog-form input[name="id"]').val(row.dataset.productId)
         $('#product-dialog-form input[name="name"]').val(name)
         $('#product-dialog-form textarea[name="description"]').val(description)

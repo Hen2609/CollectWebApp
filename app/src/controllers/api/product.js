@@ -11,9 +11,10 @@ const {renderComponent} = require("../../utils/render");
  */
 async function handleGetProducts(req, res) {
     try {
-        const { name, categories } = req.query;
+        const { name, categories , 'max-price' : maxPrice} = req.query;
         const categoryArray = categories ? categories.split(',').map(id => mongoose.Types.ObjectId.createFromHexString(id)) : undefined;
-        const products = await getProducts(name, categoryArray);
+        const parsedMax = typeof maxPrice === "string" ? parseFloat(maxPrice) : undefined
+        const products = await getProducts(name, categoryArray, parsedMax);
         res.status(200).json(products);
     } catch (error) {
         if (error instanceof CustomError) {
@@ -55,7 +56,7 @@ async function handleGetProduct(req, res) {
 async function handleCreateProduct(req, res) {
     try {
         const { name, categories, description, price, image } = req.body;
-        const categoryArray = categories ? categories.map(id => mongoose.Types.ObjectId(id)) : [];
+        const categoryArray = categories ? categories.map(id => mongoose.Types.ObjectId.createFromHexString(id)) : [];
         const product = await createProduct(name, categoryArray, description, price, image);
         res.status(201).json(product);
     } catch (error) {
@@ -75,12 +76,12 @@ async function handleCreateProduct(req, res) {
  */
 async function handleUpdateProduct(req, res) {
     try {
-        const { name, categories, description, price, image } = req.body;
-        const categoryArray = categories ? categories.map(id => mongoose.Types.ObjectId(id)) : [];
-        const isUpdated = await updateProduct(req.params.id, name, categoryArray, description, price, image);
+        const { id, name, categories, description, price, image } = req.body;
+        const categoryArray = categories ? categories.map(id => mongoose.Types.ObjectId.createFromHexString(id)) : [];
+        const isUpdated = await updateProduct(id, name, categoryArray, description, price, image);
 
         if (isUpdated) {
-            res.status(200).json({ message: "Product updated successfully" });
+            res.status(200).json( req.body );
         } else {
             res.status(404).json({ message: "Product not found" });
         }

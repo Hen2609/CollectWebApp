@@ -1,4 +1,4 @@
-aassas/**
+/**
  * @typedef {Object} Category
  * @property {string} _id
  * @property {string} name 

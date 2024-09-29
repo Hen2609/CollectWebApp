@@ -9,19 +9,7 @@ const userRoutes = require("./user")
 const locationRoutes = require("./location")
 const orderRoutes = require("./order")
 
-const excludedGetPaths = ['/location','/product/card']
-const excludedPostPaths = ['/order','/user/signup', '/user/login']
 
-router.use("/", (req, res, next) => {
-    if(req.method === 'GET' && excludedGetPaths.some(path => req.path.includes(path)) ){
-        next()
-    }
-    else if(!isAdminUser(req) && !excludedPostPaths.includes(req.path)){
-        res.status(403).send("unauthorized")
-    }else {
-        next()
-    }
-})
 router.use("/category",categoryRoutes)
 router.use("/product",productRoutes)
 router.use("/user",userRoutes)

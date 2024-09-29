@@ -1,6 +1,6 @@
 const {render} = require("../../utils/render")
 const {isAdminUser} = require("../../utils/auth");
-const {ordersByProducts, ordersByUsers} = require("../../services/order");
+const {ordersByProducts, ordersByUsers, getBestSellingCategories} = require("../../services/order");
 
 /**
  * Handles rendering of product page
@@ -14,9 +14,10 @@ async function handleStatsPage(req, res){
     if(!isAdminUser(req)){
         return res.redirect('/')
     }
-    const productOrders = await ordersByProducts()
     const usersOrders   = await ordersByUsers()
-    render(req,res,'stats', 'סטטיסטיקה', {productOrders, usersOrders})
+    const bestSelling   =  await getBestSellingCategories()
+    console.log('bes',bestSelling)
+    render(req,res,'stats', 'סטטיסטיקה', {bestSelling, usersOrders})
 }
 
 module.exports =  {

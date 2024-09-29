@@ -12,15 +12,19 @@ const {CustomError, CustomerErrorGenerator} = require("../utils/customError");
  * @function getProducts
  * @param {String | undefined} namePattern
  * @param {import("mongoose").Types.ObjectId[] | undefiend} categories
+ * @param {number | undefined } maxPrice
  * @returns {Promise<Product[]>}
  */
-async function getProducts(namePattern, categories){
+async function getProducts(namePattern, categories, maxPrice){
     const query = {}
     if(namePattern){
         query.name = new RegExp(namePattern, 'i');
     }
     if(categories && categories.length > 0){
         query.categories = { $in: categories }
+    }
+    if(maxPrice && !isNaN(maxPrice)){
+        query.price = { $lt: maxPrice }
     }
     return ProductModel.find(query);
 }
@@ -176,7 +180,7 @@ async function validateProduct(errorGenerator, name, categories, description, pr
     if(!price){
         return errorGenerator.generate("Must supply price", 4)
     }
-    const parsed_price = parseFloat(req.body.price)
+    const parsed_price = parseFloat(price)
     if(isNaN(parsed_price)){
         return errorGenerator.generate("Price Must be a number", 5);
     }
