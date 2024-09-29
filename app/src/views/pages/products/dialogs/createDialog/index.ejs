@@ -1,12 +1,14 @@
 
-<dialog id="product-dialog">
-    <button id="product-dialog-close-button" autofocus>Close</button>
-    <form id="product-dialog-form">
-        <fieldset>
+<dialog id="product-dialog" class="dialog">
+    <button id="product-dialog-close-button" aria-label="סגור" class="dialog-close-button icon-button">
+        <%- include("../../../../components/icon/index.ejs", {icon: "close"}) %>
+    </button>
+    <form id="product-dialog-form" class="dialog-content">
+        <fieldset class="dialog-details-section">
             <legend>פרטים כלליים</legend>
             <input type="hidden" name="id"/>
             <label for="product-dialog-product-name">שם</label>
-            <input type="text" id="product-dialog-product-name" name="name" placeholder="ישראל ישראלי" required/>
+            <input type="text" id="product-dialog-product-name" name="name" placeholder="ישראל ישראלי" required autofocus/>
             <label for="product-dialog-product-description">תיאור</label>
             <textarea id="product-dialog-product-description" name="description" required placeholder="מוצר מדהים" maxlength="255" rows="5" cols="51"> </textarea>
             <label for="product-dialog-product-price">מחיר</label>
@@ -16,7 +18,7 @@
             <input type="hidden" id="product-dialog-product-image" name="image"/>
             <img id="product-dialog-product-image-preview" src="" width="160" aria-label="תמונת מוצר"/>
         </fieldset>
-        <fieldset>
+        <fieldset class="dialog-categories-section">
             <legend>קטגוריות</legend>
             <label for="product-dialog-categories-list">הוסף/צור קטגוריה</label>
             <input type="text" id="product-dialog-category-search" list="product-dialog-categories-list" autocomplete="off"/>
@@ -25,16 +27,20 @@
                     <option value="<%-cat.name%>" data-id="<%-cat._id%>"></option>
                 <%  }) %>
             </datalist>
-            <button type="button" id="product-dialog-categories-add-category" aria-label="הוסף/צור קטגוריה">
+            <button type="button" id="product-dialog-categories-add-category" class="icon-button"  aria-label="הוסף/צור קטגוריה">
                 <span><%- include('../../../../../views/components/icon/index.ejs', {icon: 'add'}) %></span>
             </button>
             <div id="product-dialog-categories-chips">
 
             </div>
         </fieldset>
-        <button type="submit">צור מוצר</button>
+        <button type="submit" class="primary-button submit-button">צור מוצר</button>
     </form>
 </dialog>
 <script type="module">
      <%- include('./script.js') %>
 </script>
+<style>
+    <%- include("../../../../../styles/dialog.css") %>
+    <%- include("../dialog.css") %>
+</style>

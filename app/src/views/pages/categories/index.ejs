@@ -1,27 +1,32 @@
-<button id="categories-create-dialog-open-button">צור קטגוריה</button>
+<button id="categories-create-dialog-open-button" class="primary-button">צור קטגוריה</button>
 <%- include("./dialogs/createDialog/index.ejs") %>
 <%- include("./dialogs/editDialog/index.ejs") %>
-<table id="categories-table">
-    <thead>
-        <tr>
-            <th>פעולות</th>
-            <th>שם קטגוריה</th>
-            <th>כמות מוצרים</th>
-        </tr>
-    </thead>
-    <tbody>
-        <% categories.forEach((category) => { %>
-            <tr data-category-id="<%= category._id %>">
-                <td class="actions-cell">
-                    <button class="delete-button" aria-label="מחק"><%- include('../../components/icon/index.ejs', {icon: 'delete'}) %></button>
-                    <button class="edit-button" aria-label="ערוך"><%- include('../../components/icon/index.ejs', {icon: 'edit'}) %></button>
-                </td> 
-                <td><%=category.name%></td> 
-                <td></td> 
-            </tr>    
-        <% }) %>
-    </tbody>
-</table>
+<div class="primary-table-wrapper">
+    <table id="categories-table" class="primary-table">
+        <thead>
+            <tr class="primary-table-head">
+                <th class="primary-table-header-cell">פעולות</th>
+                <th class="primary-table-header-cell">שם קטגוריה</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% categories.forEach((category) => { %>
+                <tr data-category-id="<%= category._id %>">
+                    <td class="actions-cell primary-table-cell">
+                        <button id="delete-button" class="icon-button" aria-label="מחק"><%- include('../../components/icon/index.ejs', {icon: 'delete'}) %></button>
+                        <button id="edit-button" class="icon-button" aria-label="ערוך"><%- include('../../components/icon/index.ejs', {icon: 'edit'}) %></button>
+                    </td>
+                    <td class="primary-table-cell"><%=category.name%></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>
+
 <script type="module">
      <%- include('./script.js') %>
 </script>
+<style>
+    <%- include('../../../styles/table.css') %>
+    <%- include('./style.css') %>
+</style>

@@ -19,21 +19,5 @@
             justify-self: center;
             cursor: default;
         }
-        #filter-button{
-            background-color: transparent;
-            border: none;
-            color: var(--primary-blue);
-            border-radius: 50%;
-            aspect-ratio: 1;
-            span {
-                display: flex;
-                justify-items: center;
-                align-items: center;
-            }
-            &:hover, &:focus {
-                background-color: var(--light-blue);
-                color: var(--dark-blue);
-            }
-        }
     }
 }

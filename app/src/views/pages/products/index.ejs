@@ -1,46 +1,49 @@
-<button id="product-dialog-open-button">צור מוצר</button>
+<button id="product-dialog-open-button" class="primary-button" >צור מוצר</button>
 <%- include("./dialogs/createDialog/index.ejs", {categories}) %>
-<table id="products-table">
-    <thead>
-        <tr>
-            <th>פעולות</th>
-            <th>שם</th>
-            <th>קטגוריות</th>
-            <th>תיאור</th>
-            <th>מחיר</th>
-            <th>תמונה</th>
+<div class="primary-table-wrapper">
+    <table id="products-table" class="primary-table">
+        <thead>
+        <tr class="primary-table-head">
+            <th class="primary-table-header-cell">פעולות</th>
+            <th class="primary-table-header-cell">שם</th>
+            <th class="primary-table-header-cell">קטגוריות</th>
+            <th class="primary-table-header-cell">תיאור</th>
+            <th class="primary-table-header-cell">מחיר</th>
+            <th class="primary-table-header-cell">תמונה</th>
         </tr>
-    </thead>
-    <tbody>
+        </thead>
+        <tbody>
         <% products.forEach((product) => { %>
             <tr data-product-id="<%= product._id %>">
-                <td class="actions-cell">
-                    <button class="delete-button" aria-label="מחק"><%- include('../../components/icon/index.ejs', {icon: 'delete'}) %></button>
-                    <button class="edit-button" aria-label="ערוך"><%- include('../../components/icon/index.ejs', {icon: 'edit'}) %></button>
-                </td> 
-                <td><%=product.name%></td> 
-                <td>
+                <td class="primary-table-cell">
+                    <div class="actions-cell">
+                        <button id="delete-button" class="icon-button" aria-label="מחק"><%- include('../../components/icon/index.ejs', {icon: 'delete'}) %></button>
+                        <button id="edit-button" class="icon-button" aria-label="ערוך"><%- include('../../components/icon/index.ejs', {icon: 'edit'}) %></button>
+                    </div>
+                </td>
+                <td class="primary-table-cell"><%=product.name%></td>
+                <td class="primary-table-cell">
                     <% product.categories.forEach((category, i) => { %>
                         <% const name = categories.find((cat) => cat._id.toString() === category.toString())?.name %>
                         <% if(name) { %>
                             <p><%= name %><% let seprator = i !== product.categories.length - 1 ? "," : ""%><%= seprator %></p>
                         <% } %>
                     <% }) %>
-                </td> 
-                <td><%=product.description%></td> 
-                <td>
+                </td>
+                <td class="primary-table-cell"><%=product.description%></td>
+                <td class="primary-table-cell">
                     <%=utils.formatters.currency(product.price)%>
-                </td> 
-                <td>
+                </td>
+                <td class="primary-table-cell">
                     <% if(product.image) {%>
                         <img src="<%- product.image %>" alt="<%- product.name %>" width="160"/>
                     <% } %>
-                </td> 
-                <td></td> 
-            </tr>    
+                </td>
+            </tr>
         <% }) %>
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>
 <script type="module">
     window.createCategoryChip = function createCategoryChip(categoryId, categoryName){
 
@@ -50,11 +53,12 @@
             class: categoryId,
             value: categoryId
         })
-        const buttonContent = $('<span>').html(categoryName.concat(' ','<span class="material-symbols-outlined">close</span>')) 
+        const buttonContent = $('<span>').html('<span class="content">'.concat(categoryName.concat(' ','<span class="icon-button material-symbols-outlined">close</span>'),'</span>'))
         const button = $('<button>').attr({
             'data-category-id': categoryId,
             class: "category-remove-button",
-            type: "button"
+            type: "button",
+            ariaLabel: "הסר קטגוריה"
         })
         .append(buttonContent)
         return {
@@ -75,3 +79,7 @@
 }
     <%- include('./script.js') %>
 </script>
+<style>
+    <%- include('../../../styles/table.css') %>
+    <%- include('./style.css') %>
+</style>

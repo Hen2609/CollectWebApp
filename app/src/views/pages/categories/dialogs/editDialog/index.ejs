@@ -1,12 +1,17 @@
 
-<dialog id="categories-edit-dialog">
-    <button id="categories-edit-dialog-close-button" autofocus>Close</button>
-    <form id="categories-edit-dialog-form">
+<dialog id="categories-edit-dialog" class="dialog">
+    <button id="categories-edit-dialog-close-button" class="icon-button dialog-close-button" aria-label="סגור">
+        <%- include("../../../../components/icon/index.ejs", {icon: "close"}) %>
+    </button>
+    <form id="categories-edit-dialog-form" class="dialog-content">
         <input type="hidden" name="id" value="" required/>
-        <input type="text" name="name" placeholder="שם" required/>
-        <button type="submit">שמור</button>
+        <input type="text" name="name" placeholder="שם" required autofocus/>
+        <button type="submit" class="primary-button">שמור</button>
     </form>
 </dialog>
 <script type="module">
      <%- include('./script.js') %>
 </script>
+<style>
+    <%- include("../../../../../styles/dialog.css") %>
+</style>

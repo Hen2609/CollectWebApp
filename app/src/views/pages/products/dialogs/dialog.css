@@ -1,0 +1,37 @@
+.dialog-details-section {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    row-gap: 10px;
+    #product-dialog-product-image-upload::file-selector-button {
+        font-weight: bold;
+        background-color: var(--primary-blue);
+        padding: 0.5em;
+        border-color:transparent;
+        border-radius: 3px;
+        color: var(--text-on-blue);
+    }
+}
+.dialog-categories-section {
+    display: grid;
+    grid-template-columns: auto auto auto 1fr;
+    gap: 10px;
+    align-items: center;
+    #product-dialog-categories-chips {
+        grid-column: span 4;
+        .category-remove-button {
+            background-color: transparent;
+            border-radius: 1rem;
+            border-color: var(--primary-blue);
+            border-style: solid;
+            padding-inline: 10px;
+            .content {
+                display: flex;
+                align-items: center;
+
+            }
+        }
+    }
+}
+.submit-button {
+    width: fit-content;
+}

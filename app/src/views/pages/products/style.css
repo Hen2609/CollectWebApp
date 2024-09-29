@@ -1,0 +1,6 @@
+.primary-table-cell{
+    .actions-cell {
+        display: flex;
+        justify-content: center;
+    }
+}

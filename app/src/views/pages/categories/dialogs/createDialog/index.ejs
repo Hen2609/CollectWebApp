@@ -1,11 +1,16 @@
 
-<dialog id="categories-create-dialog">
-    <button id="categories-create-dialog-close-button" autofocus>Close</button>
-    <form id="categories-create-dialog-form">
-        <input type="text" name="name" placeholder="שם" required/>
-        <button type="submit">צור קטגוריה</button>
+<dialog id="categories-create-dialog" class="dialog">
+    <button id="categories-create-dialog-close-button" aria-label="סגור" class="icon-button dialog-close-button">
+        <%- include("../../../../components/icon/index.ejs", {icon: "close"}) %>
+    </button>
+    <form id="categories-create-dialog-form" class="dialog-content">
+        <input type="text" name="name" placeholder="שם" required autofocus/>
+        <button type="submit" class="primary-button">צור קטגוריה</button>
     </form>
 </dialog>
 <script type="module">
      <%- include('./script.js') %>
 </script>
+<style>
+    <%- include("../../../../../styles/dialog.css") %>
+</style>

@@ -22,7 +22,7 @@ productsTable.on("click", (e) => {
     if(!row){
         return
     }
-    if($(e.target).closest('button.delete-button').length > 0){
+    if($(e.target).closest('#delete-button').length > 0){
         if(confirm("האם אתה בטוח שאתה רוצה למחוק את המוצר?")){
             $.ajax({
                 type: "DELETE",
@@ -46,7 +46,7 @@ productsTable.on("click", (e) => {
             });
         }
     }
-    else if($(e.target).closest('button.edit-button').length > 0){
+    else if($(e.target).closest('#edit-button').length > 0){
         const name = row.querySelector("td:nth-child(2)")?.textContent
         const description = row.querySelector("td:nth-child(4)")?.textContent
         const price_string = row.querySelector("td:nth-child(5)")?.textContent.match(/\d+\.?\d*/)

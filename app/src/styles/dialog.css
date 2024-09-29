@@ -1,0 +1,14 @@
+    .dialog {
+        position: relative;
+        padding-block-start: 2.1rem;
+        .dialog-close-button {
+            position: absolute;
+            inset-block-start: 0;
+            inset-inline-end: 0;
+        }
+        .dialog-content {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+    }

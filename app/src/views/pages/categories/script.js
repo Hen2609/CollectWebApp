@@ -13,7 +13,7 @@ categoriesTable.on("click", (e) => {
     if(!row){
         return
     }
-    if($(e.target).closest('button.delete-button').length > 0){
+    if($(e.target).closest('#delete-button').length > 0){
         if(confirm("האם אתה בטוח שאתה רוצה למחוק את הקטגוריה?")){
             $.ajax({
                 type: "DELETE",
@@ -37,7 +37,7 @@ categoriesTable.on("click", (e) => {
             });
         }
     }
-    else if($(e.target).closest('button.edit-button').length > 0){
+    else if($(e.target).closest('#edit-button').length > 0){
         $('#categories-edit-dialog-form input[name="id"]').val(row.dataset.categoryId)
         $('#categories-edit-dialog-form input[name="name"]').val(name.textContent)
         editDialog.showModal()

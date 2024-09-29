@@ -3,36 +3,37 @@
 <% } else { %>
     <h1>הזמנות שלי</h1>
 <% } %>
-<div class="orders-table-wrapper">
-    <table class="orders-table">
+<div class="primary-table-wrapper">
+    <table class="primary-table">
         <thead>
-            <tr class="orders-table-head">
-                <th class="orders-table-header-cell orders-table-cell">משתמש</th>
-                <th class="orders-table-header-cell orders-table-cell">תאריך</th>
-                <th class="orders-table-header-cell orders-table-cell">פריטים</th>
-                <th class="orders-table-header-cell orders-table-cell">סכום</th>
-                <th class="orders-table-header-cell orders-table-cell">חתימה</th>
+            <tr class="primary-table-head">
+                <th class="primary-table-header-cell primary-table-cell">משתמש</th>
+                <th class="primary-table-header-cell primary-table-cell">תאריך</th>
+                <th class="primary-table-header-cell primary-table-cell">פריטים</th>
+                <th class="primary-table-header-cell primary-table-cell">סכום</th>
+                <th class="primary-table-header-cell primary-table-cell">חתימה</th>
             </tr>
         </thead>
         <tbody>
             <% orders.forEach(order => { %>
-                <tr class="orders-table-row">
-                    <td class="orders-table-cell"><%= order.user ? order.user : "רכישה אנונימית" %></td>
+                <tr class="primary-table-row">
+                    <td class="primary-table-cell"><%= order.user ? order.user : "רכישה אנונימית" %></td>
                     <% const date = new Date(order.date).toLocaleDateString('he-IL'); %>
-                    <td class="orders-table-cell" ><%= date %></td>
-                    <td class="orders-table-cell">
+                    <td class="primary-table-cell" ><%= date %></td>
+                    <td class="primary-table-cell">
                         <details>
                             <summary><%= order.products.length %> פריטים </summary>
                             <%- include("../../components/order-products/index.ejs",{products: order.products, utils}) %>
                         </details>
                     </td>
-                    <td class="orders-table-cell"><%= utils.formatters.currency(order.price) %></td>
-                    <td class="orders-table-cell"><img alt="חתימה" src="<%- order.signature %>" width="160"/></td>
+                    <td class="primary-table-cell"><%= utils.formatters.currency(order.price) %></td>
+                    <td class="primary-table-cell"><img alt="חתימה" src="<%- order.signature %>" width="160"/></td>
                 </tr>
             <% }) %>
         </tbody>
     </table>
 </div>
 <style>
+    <%- include('../../../styles/table.css') %>
     <%- include('./style.css') %>
 </style>
